@@ -1,0 +1,2193 @@
+:root {
+  /* Updated color theme with modern blue palette */
+  --primary-color: #3b82f6; /* Blue instead of Yellow */
+  --primary-hover: #2563eb; /* Darker blue for hover states */
+  --accent-color: #8b5cf6; /* Purple for accents instead of amber */
+  --secondary-color: #f3f4f6; /* Light gray kept the same */
+  --text-color: #111827; /* Dark text kept the same */
+  --light-text: #4b5563; /* Medium gray for labels kept the same */
+  --border-color: #e5e7eb;
+  --card-bg:rgb(255, 255, 255);
+  --sidebar-bg: #f3f4f6; /* Light gray sidebar for light mode */
+  --sidebar-text: #111827; /* Dark text for sidebar in light mode */
+  --light-gray: #f9fafb;
+  --dark-bg:  #1f2937;
+  --dark-card: #374151;
+  --dark-text: #f9fafb;
+  --status-completed: #10b981; /* Teal green */
+  --status-in-progress: #f59e0b; /* Amber yellow */
+  --status-pending: #ef4444; /* Red kept the same */
+  --bg-color: #f9fafb; /* Light background color */
+  --preview-bg: #ffffff; /* Invoice preview background */
+  --preview-text: #111827; /* Invoice preview text color */
+
+  /* Added new UI enhancement variables */
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  --transition-speed: 0.2s;
+}
+
+/* Dark mode variables */
+body.dark-mode {
+  --card-bg: #1e2130;
+  --text-color: #f9fafb;
+  --light-text: #d1d5db;
+  --secondary-color:rgba(26, 26, 27, 0.14);
+  --border-color: rgba(19, 18, 18, 0.637);
+  --sidebar-bg: #111827; /* Dark sidebar for dark mode */
+  --sidebar-text: #f9fafb; /* Light text for sidebar in dark mode */
+  --bg-color: #232937;
+  --preview-bg: #1e2130;
+  --preview-text: #f9fafb;
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary-color);
+  dissplay: flex;
+  align-items: center;
+  margin-bottom: 0;
+  transition: color var(--transition-speed) ease;
+}
+
+.logo img {
+  max-height: 40px;
+  margin-right: 10px;
+}
+
+.logo:hover {
+  filter: none;
+  color: var(--accent-color);
+}
+.logo.react:hover {
+  filter: none;
+}
+
+.user-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 24px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all var(--transition-speed);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  border-radius: 24px;
+}
+
+.btn-secondary:hover {
+  background-color: #e2e8f0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--accent-color);
+  transition: all var(--transition-speed);
+}
+
+.btn-icon:hover {
+  transform: scale(1.1);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: var(--card-shadow);
+  padding: 25px;
+  margin-bottom: 25px;
+  transition: box-shadow var(--transition-speed), transform var(--transition-speed);
+}
+
+.card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.07);
+  transform: translateY(-2px);
+}
+
+.card-title {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(224, 127, 169, 0.1);
+}
+
+/* General table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+table th {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  font-weight: bold;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Invoice items table specific styles */
+.service-items-table .main-service-row {
+  background-color: #f5f5f5;
+}
+
+.service-items-table .sub-service-row {
+  background-color: white;
+}
+
+.service-items-table .add-sub-service-row {
+  background-color: #f9f9f9;
+}
+
+.service-items-table .main-service-name {
+  background-color: transparent;
+}
+
+/* Dark mode overrides for table rows */
+body.dark-mode .service-items-table .main-service-row {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
+body.dark-mode .service-items-table .sub-service-row {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+}
+
+body.dark-mode .service-items-table .add-sub-service-row {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
+body.dark-mode .service-items-table .main-service-name {
+  background-color: transparent;
+  color: var(--text-color);
+}
+
+body.dark-mode .service-items-table input,
+body.dark-mode .service-items-table textarea {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+body.dark-mode tr.main-service-row td {
+  background-color: var(--secondary-color) !important;
+  color: var(--text-color);
+}
+
+body.dark-mode tr.sub-service-row td {
+  background-color: var(--card-bg) !important;
+  color: var(--text-color);
+}
+
+body.dark-mode .add-sub-service-row td {
+  background-color: var(--secondary-color) !important;
+  color: var(--text-color);
+}
+
+.item-row td {
+  border-bottom: none;
+  vertical-align: top;
+}
+
+.nested-row td {
+  padding-left: 20px;
+  font-size: 0.9em;
+  color: var(--text-color);
+  border-bottom: 1px dashed var(--border-color);
+}
+
+/* Improve invoice items table layout */
+.invoice-items-table {
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.invoice-items-table input,
+.invoice-items-table textarea {
+  min-height: auto;
+  padding: 8px;
+}
+
+.invoice-items-table .item-description {
+  min-height: 60px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Invoice Preview Styles */
+.invoice-preview {
+  background: var(--preview-bg);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  overflow: auto;
+  padding: 40px;
+  color: var(--preview-text);
+}
+
+.preview-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--preview-bg);
+  padding: 40px;
+  border-radius: 18px;
+  box-shadow: var(--card-shadow);
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+}
+
+.preview-logo {
+  max-width: 180px;
+  max-height: 90px;
+  object-fit: contain;
+}
+
+.preview-title {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.preview-details h3 {
+  color: var(--primary-color);
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.preview-details p {
+  margin-bottom: 8px;
+  line-height: 1.5;
+  color: var(--preview-text);
+}
+
+.preview-items {
+  margin: 30px 0;
+}
+
+.preview-items h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.preview-items table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+.preview-items table th {
+  background-color: var(--card-bg);
+  color: var(--preview-text);
+  font-weight: bold;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.preview-items table tr td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--preview-text);
+  background-color: var(--preview-bg);
+}
+
+.preview-items table tr.nested-row td {
+  padding-left: 20px;
+  font-size: 1em;
+  color: var(--preview-text);
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--preview-bg);
+}
+
+/* Dark mode specific styles for service table */
+body.dark-mode .service-table th {
+  background-color: var(--dark-card);
+  color: var(--dark-text);
+  border-bottom-color: var(--border-color);
+}
+
+body.dark-mode .service-table td {
+  background-color: var(--dark-card);
+  color: var(--dark-text);
+  border-bottom-color: var(--border-color);
+}
+
+/* Add background color for nested rows in service table */
+.service-table tr.indented td {
+  background-color: var(--card-bg); 
+  padding-left: 20px;
+}
+
+body.dark-mode .service-table tr.indented td {
+  background-color: var(--dark-card);
+  color: var (--dark-text);
+  border-bottom-color: var(--border-color);
+}
+
+/* Dark mode styles for main-service-row and sub-service-row */
+body.dark-mode .main-service-row td {
+  background-color: var(--dark-card) !important;
+  color: var(--dark-text);
+}
+
+body.dark-mode .main-service-row input {
+  background-color: var(--secondary-color) !important;
+  color: var(--dark-text);
+}
+
+body.dark-mode tr.sub-service-row td {
+  background-color: var(--dark-card) !important;
+  color: var(--dark-text);
+}
+
+body.dark-mode .add-sub-service-row td {
+  background-color: var(--secondary-color) !important;
+  color: var(--dark-text);
+}
+
+/* Dark mode specific styles for preview items tables */
+body.dark-mode .preview-items table tr td {
+  background-color: var(--dark-card);
+  color: var(--dark-text);
+}
+
+body.dark-mode .preview-items table tr.nested-row td {
+  background-color: var(--dark-card);
+  color: var(--dark-text);
+}
+
+/* Dark mode specific styles for invoice preview */
+body.dark-mode .invoice-preview {
+  background: var(--dark-bg);
+}
+
+body.dark-mode .preview-container {
+  background: var(--dark-card);
+  color: var(--dark-text);
+}
+
+body.dark-mode .preview-header {
+  border-bottom-color: var(--border-color);
+}
+
+body.dark-mode .preview-items h3,
+body.dark-mode .preview-details h3 {
+  color: var(--light-text);
+}
+
+body.dark-mode .preview-totals td {
+  color: var(--light-text);
+}
+
+body.dark-mode .preview-notes h3 {
+  color: var(--light-text);
+}
+
+body.dark-mode .preview-notes p {
+  color: var(--dark-text);
+}
+
+/* Spinner Animation for PDF Generation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Media print styles to ensure PDF looks correct */
+@media print {
+  .a4-preview-container {
+    width: 100%;
+    height: 100%;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .actions {
+    display: none;
+  }
+}
+
+/* A4 Invoice Layout Styles */
+.a4-preview-container {
+  width: 210mm; /* A4 width */
+  min-height: 297mm; /* A4 height */
+  padding: 20mm; /* Standard margin */
+  background-color: #fff;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+  color: #333;
+}
+
+/* 1. Top Header with Logo and Invoice Title */
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.company-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-logo {
+  max-width: 120px;
+  height: auto;
+  object-fit: contain;
+}
+
+.company-name-header h1 {
+  font-size: 24px;
+  color: var(--primary-color);
+  margin-top: 10px;
+}
+
+.invoice-title h2 {
+  font-size: 28px;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+/* 2. Company and Invoice Details Section */
+.details-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.bill-to-section {
+  margin-bottom: 20px;
+}
+
+.bill-to-section h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.customer-info {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.info-row {
+  margin-bottom: 5px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 50%;
+}
+
+.invoice-summary {
+  margin-bottom: 20px;
+}
+
+.rate-info {
+  display: flex;
+  gap: 30px;
+}
+
+.service-table {
+  margin-bottom: 20px;
+}
+
+.service-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.service-table th {
+  background-color: var(--secondary-color);
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.service-table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--card-bg); /* Add background color that respects theme */
+}
+
+.service-table .indented {
+  padding-left: 20px;
+}
+
+.totals-section {
+  margin-top: 20px;
+  margin-left: auto;
+  width: 50%;
+}
+
+.totals-section table {
+  width: 100%;
+}
+
+.totals-section td {
+  padding: 8px 0;
+}
+
+.grand-total {
+  font-weight: bold;
+  color: var(--primary-color);
+  border-top: 2px solid var(--border-color);
+  font-size: 16px;
+}
+
+.bank-details {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+}
+
+.bank-details h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.account-info {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.invoice-footer {
+  margin-top: 40px;
+  text-align: center;
+  font-style: italic;
+  color: var(--light-text);
+}
+
+/* Animation for form errors */
+@keyframes shake {
+  0%, 100% {transform: translateX(0);}
+  20%, 60% {transform: translateX(-5px);}
+  40%, 80% {transform: translateX(5px);}
+}
+
+.shake {
+  animation: shake 0.5s;
+}
+
+/* Authentication state visual feedback */
+.auth-status {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.auth-status .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #4caf50;
+  margin-right: 6px;
+}
+
+/* Not Found Page */
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.not-found h1 {
+  font-size: 6rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.not-found p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.not-found .btn {
+  font-size: 1rem;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Notification Display */
+.notification-display {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10000;
+  max-width: 80%;
+}
+
+.notification-content {
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: slide-in 0.3s ease-out;
+  color: white;
+}
+
+/* Different notification types */
+.notification-content.error {
+  background-color: var(--status-pending); /* Red */
+}
+
+.notification-content.success {
+  background-color: var(--status-completed); /* Green */
+}
+
+.notification-content.warning {
+  background-color: var(--status-in-progress); /* Amber */
+}
+
+.notification-content.info {
+  background-color: var(--primary-color); /* Blue */
+}
+
+.notification-message {
+  margin-right: 20px;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Keep the old class for backward compatibility */
+.error-display {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10000;
+  max-width: 80%;
+}
+
+.error-content {
+  background-color: var(--status-pending);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: slide-in 0.3s ease-out;
+}
+
+.error-message {
+  margin-right: 20px;
+}
+
+.error-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Debug and Diagnostic Pages */
+.debug-container,
+.diagnostic-container,
+.demo-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.debug-title,
+.diagnostic-title,
+.demo-title {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.card-nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.test-section {
+  margin-bottom: 20px;
+}
+
+.test-section h3 {
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.success {
+  color: #4caf50;
+}
+
+.error {
+  color: #f44336;
+}
+
+.test-result {
+  margin-bottom: 5px;
+}
+
+pre {
+  background-color: var(--light-gray);
+  padding: 15px;
+  border-radius: 5px;
+  overflow: auto;
+  max-height: 200px;
+  font-family: monospace;
+  margin-top: 10px;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* Increased to be above sidebar and overlay */
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: scaleIn 0.2s ease-out;
+  z-index: 2100; /* Ensure modal content is above everything */
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: var(--primary-color);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Dashboard-specific styles */
+.dashboard-container {
+  display: grid;
+  grid-template-areas: 
+    "sidebar topbar"
+    "sidebar main";
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg-color);
+}
+
+body.dark-mode .dashboard-container {
+  background-color: var(--dark-bg);
+}
+
+.dashboard-sidebar {
+  grid-area: sidebar;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  box-shadow: var(--card-shadow);
+  border-radius: 18px 0 0 18px;
+}
+
+.dashboard-main {
+  grid-area: main;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: var(--bg-color);
+  transition: background-color var(--transition-speed);
+  border-radius: 0 18px 18px 0;
+}
+
+.dashboard-topbar {
+  grid-area: topbar;
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding: 15px 25px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.company-logo-container {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.main-company-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+}
+
+.company-list {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.company-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  color: var(--sidebar-text);
+  opacity: 0.8;
+}
+
+.company-item:hover {
+  background-color: rgba(122, 113, 113, 0.1);
+  opacity: 1;
+}
+
+.company-item.active {
+  background-color: var(--primary-color);
+  opacity: 1;
+}
+
+.company-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+.company-name {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-footer {
+  padding: 15px;
+  border-top: 1px solid var(--border-color);
+}
+
+.btn-logout {
+  width: 100%;
+  padding: 10px;
+  background-color: #e53e3e; /* Red background to match UI theme */
+  border: 1px solid var(--border-color);
+  color: #fff; /* White text for contrast */
+  border-radius: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all var(--transition-speed);
+}
+
+.btn-logout:hover {
+  background-color: #c53030; /* Darker red on hover */
+}
+
+body:not(.dark-mode) .btn-logout {
+  background-color: #ffe86e; /* Updated background color for logout button in light mode */
+}
+
+body.dark-mode .btn-logout {
+  background-color: rgb(160, 124, 7);
+  border-color: rgb(160, 124, 7);
+  color: #fff;
+}
+
+body.dark-mode .btn-logout:hover {
+  background-color: rgb(148, 118, 18);
+  border-color: rgb(250, 248, 248);
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.dashboard-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--light-text);
+  pointer-events: none;
+}
+
+.search-container input {
+  padding: 10px 10px 10px 35px;
+  border: 1px solid var(--border-color);
+  border-radius: 40px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  width: 250px;
+  transition: all var(--transition-speed);
+}
+
+.search-container input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.btn-create {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-create:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Adding custom styling for invoice-list and dashboard-empty-state */
+.invoice-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+/* Adding specific style for dashboard-empty-state to ensure it's centered properly */
+.dashboard-empty-state {
+  grid-column: 1 / -1;
+  justify-self: center;
+  margin: 48px auto;
+  max-width: 600px;
+}
+
+.invoice-card {
+  background-color: var(--card-bg);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+  transition: all var(--transition-speed);
+}
+
+.invoice-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.invoice-card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.invoice-company-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  object-fit: contain;
+}
+
+.invoice-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.invoice-number {
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.invoice-company {
+  color: var(--light-text);
+  font-size: 0.9em;
+}
+
+.invoice-card-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.invoice-amount {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.amount {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.currency {
+  color: var(--light-text);
+  font-size: 0.9em;
+}
+
+.invoice-date, .invoice-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.label {
+  color: var(--light-text);
+  font-size: 0.9em;
+}
+
+.value {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 15px;
+  font-size: 0.8em;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+}
+
+.status.paid {
+  background-color: var(--status-completed);
+}
+
+.status.pending {
+  background-color: var(--status-pending);
+}
+
+.status.draft {
+  background-color: var(--status-in-progress);
+}
+
+.status.cancelled {
+  background-color: var(--status-pending);
+}
+
+.no-invoices-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 50px;
+  background-color: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: var(--card-shadow);
+  color: var(--text-color);
+}
+
+.auth-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--status-completed);
+}
+
+.btn-clear-filter {
+  margin-top: 10px;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+}
+
+.btn-clear-filter:hover {
+  background-color: var(--border-color);
+}
+
+/* Theme Switch Styling */
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e2e8f0;
+  border-radius: 30px;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.theme-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.theme-switch .sun-icon,
+.theme-switch .moon-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-color);
+  z-index: 1;
+  transition: 0.4s;
+}
+
+.theme-switch .sun-icon {
+  color: #f59e0b;
+}
+
+.theme-switch .moon-icon {
+  color: #6366f1;
+}
+
+input:checked + .slider {
+  background-color: #1e293b;
+}
+
+input:checked + .slider:before {
+  transform: translateX(30px);
+}
+
+/* Additional animation for the icons */
+input:not(:checked) + .slider .sun-icon {
+  opacity: 1;
+}
+
+input:not(:checked) + .slider .moon-icon {
+  opacity: 0.5;
+}
+
+input:checked + .slider .sun-icon {
+  opacity: 0.5;
+}
+
+input:checked + .slider .moon-icon {
+  opacity: 1;
+}
+
+/* Add a nice glow effect on hover */
+.theme-switch:hover .slider:before {
+  box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Animation for dark mode transition */
+body, .card, .dashboard-sidebar, .dashboard-topbar, input, select, textarea, button {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Bin Page Styles */
+.bin-container {
+  padding: 20px 0;
+}
+
+.bin-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.bin-header h1 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.bin-header p {
+  color: var(--light-text);
+  margin-bottom: 20px;
+}
+
+.empty-bin {
+  background-color: var(--card-bg);
+  border-radius: 18px;
+  padding: 40px 20px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+}
+
+.empty-bin-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.empty-bin h2 {
+  font-size: 24px;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.empty-bin p {
+  color: var(--light-text);
+  margin-bottom: 25px;
+}
+
+.bin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+.bin-table th {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  text-align: left;
+  padding: 15px;
+  font-weight: bold;
+}
+
+.bin-table td {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.bin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.bin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.bin-action-btn {
+  padding: 8px 10px;
+  font-size: 13px;
+  border-radius: 24px;
+}
+
+.btn-danger {
+  background-color: #e53e3e;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c53030;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--light-text);
+}
+
+/* For the bin badge in sidebar/dashboard */
+.bin-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+/* Animation for bin icon */
+@keyframes shake {
+  0%, 100% { transform: rotate(0); }
+  10%, 30%, 50%, 70%, 90% { transform: rotate(-5deg); }
+  20%, 40%, 60%, 80% { transform: rotate(5deg); }
+}
+
+.bin-icon {
+  margin-right: 6px;
+  font-size: 16px;
+  animation: shake 1s ease both;
+  animation-play-state: paused;
+}
+
+.bin-link:hover .bin-icon {
+  animation-play-state: running;
+}
+
+/* Force the invoice preview to always look like light mode */
+.a4-preview-container {
+  width: 210mm; /* A4 width */
+  min-height: 297mm; /* A4 height */
+  padding: 20mm; /* Standard margin */
+  background-color: #fff !important; /* Force white background */
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+  color: #333 !important; /* Force black text */
+}
+
+/* Force black text in invoice preview regardless of dark mode */
+.a4-preview-container * {
+  color: #333 !important;
+}
+
+/* Fix for invoice number text */
+.a4-preview-container .invoice-number p,
+.a4-preview-container .invoice-details p,
+.a4-preview-container .company-details p,
+.a4-preview-container .bill-to-section p,
+.a4-preview-container .invoice-footer p {
+  color: #333 !important;
+}
+
+/* Fix for service table in dark mode */
+.a4-preview-container table th {
+  background-color: #f3f4f6 !important; /* Light gray for headers */
+  color: #333 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+.a4-preview-container table td {
+  background-color: #ffffff !important; /* White for cells */
+  color: #333 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+/* Additional specific fixes for main service rows and sub-service rows */
+.a4-preview-container .main-service-row td,
+.a4-preview-container tr.main-service-row td {
+  background-color: #f5f5f5 !important; /* Light gray background */
+  color: #333 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+.a4-preview-container .sub-service-row td,
+.a4-preview-container tr.sub-service-row td {
+  background-color: #ffffff !important; /* White background */
+  color: #333 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+/* Ensure all service descriptions display properly */
+.a4-preview-container .service-description {
+  color: #333 !important;
+}
+
+/* Make sure service amount rows display properly */
+.a4-preview-container .amount-row td {
+  background-color: #ffffff !important;
+  color: #333 !important;
+}
+
+/* Fix any potential color inheritance issues with nested elements */
+.a4-preview-container table tr td * {
+  color: #333 !important;
+}
+
+/* Force light appearance for invoice preview in dark mode */
+body.dark-mode .a4-preview-container {
+  background-color: white !important;
+  color: #333 !important;
+}
+
+/* Fix service table rows in invoice preview */
+body.dark-mode .a4-preview-container .main-service-row,
+body.dark-mode .a4-preview-container .main-service-row td,
+body.dark-mode .a4-preview-container tr.main-service-row td {
+  background-color: #f5f5f5 !important;
+  color: #333 !important;
+  border-color: #e5e7eb !important;
+}
+
+body.dark-mode .a4-preview-container .sub-service-row,
+body.dark-mode .a4-preview-container .sub-service-row td,
+body.dark-mode .a4-preview-container tr.sub-service-row td {
+  background-color: white !important;
+  color: #333 !important;
+  border-color: #e5e7eb !important;
+}
+
+/* Ensure all text elements in the invoice are black in dark mode */
+body.dark-mode .a4-preview-container p,
+body.dark-mode .a4-preview-container h1,
+body.dark-mode .a4-preview-container h2,
+body.dark-mode .a4-preview-container h3,
+body.dark-mode .a4-preview-container td,
+body.dark-mode .a4-preview-container th,
+body.dark-mode .a4-preview-container strong,
+body.dark-mode .a4-preview-container .invoice-footer {
+  color: #333 !important;
+}
+
+/* Fix table headers in dark mode */
+body.dark-mode .a4-preview-container th {
+  background-color: #f3f4f6 !important;
+  color: #333 !important;
+}
+
+/* Make description text black */
+body.dark-mode .a4-preview-container td p {
+  color: #333 !important;
+}
+
+/* Make "Thanks for your business" visible in dark mode */
+body.dark-mode .a4-preview-container .invoice-footer {
+  color: #333 !important;
+}
+
+/* Sidebar section headings */
+.dashboard-sidebar h2,
+.dashboard-sidebar h3,
+.dashboard-sidebar .sidebar-section-title {
+  color: var(--light-text);
+}
+
+/* Sidebar faded/disabled text (e.g., no clients, add new client, etc.) */
+.dashboard-sidebar .sidebar-faded,
+.dashboard-sidebar .sidebar-disabled,
+.dashboard-sidebar .sidebar-placeholder {
+  color: #b0b3b8;
+}
+
+/* Sidebar icons */
+.dashboard-sidebar svg,
+.dashboard-sidebar .sidebar-icon {
+  color: var(--light-text);
+}
+
+/* Sidebar links and items (active and hover states) */
+.company-item.active {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+.company-item:hover {
+  color: var(--text-color);
+}
+
+/* Sidebar logout button */
+.btn-logout {
+  color: var(--sidebar-text);
+}
+
+/* Ensure all sidebar text is dark in light mode */
+body:not(.dark-mode) .dashboard-sidebar,
+body:not(.dark-mode) .dashboard-sidebar * {
+  color: var(--sidebar-text) !important;
+}
+
+/* But allow .company-item.active to stay white text on blue */
+body:not(.dark-mode) .dashboard-sidebar .company-item.active {
+  color: #fff !important;
+}
+
+/* Force white text for Show All Invoices sidebar item in light mode */
+body:not(.dark-mode) .dashboard-sidebar .company-item.active .company-name {
+  color: #fff !important;
+}
+
+/* Force white color for the sidebar icon (including FiUser or similar) in Show All Invoices when active in light mode */
+body:not(.dark-mode) .dashboard-sidebar .company-item.active .sidebar-icon,
+body:not(.dark-mode) .dashboard-sidebar .company-item.active svg {
+  color: #fff !important;
+  fill: #fff !important;
+}
+
+/* Force white text for Create Your First Invoice button in light mode */
+body:not(.dark-mode) .no-invoices-message .btn {
+  color: #fff !important;
+}
+
+/* Force white text for Create Your First Invoice text in light mode */
+body:not(.dark-mode) .no-invoices-message .btn {
+  color: #fff !important;
+}
+
+/* --- Mobile Sidebar & Responsive Dashboard --- */
+@media (max-width: 900px) {
+  .dashboard-container {
+    display: block;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+  .dashboard-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80vw;
+    max-width: 320px;
+    height: 100vh;
+    z-index: 1200;
+    background: var(--sidebar-bg);
+    box-shadow: 2px 0 16px rgba(0,0,0,0.15);
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    will-change: transform;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0;
+    border-radius: 0 18px 18px 0;
+  }
+  .dashboard-sidebar.open {
+    transform: translateX(0);
+  }
+  .sidebar-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1100;
+    animation: fadeIn 0.2s;
+  }
+  .sidebar-toggle-btn {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 1300;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 22px;
+  }
+  .sidebar-close-btn {
+    display: block;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 2rem;
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    z-index: 1400;
+    cursor: pointer;
+    background-color: transparent;
+  }
+  .dashboard-topbar {
+    padding-left: 60px;
+    min-height: 60px;
+  }
+  .dashboard-main {
+    padding: 16px 8px 32px 8px;
+  }
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .dashboard-controls {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .invoice-list {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-sidebar {
+    width: 95vw;
+    max-width: 100vw;
+    border-radius: 0 0 18px 18px;
+  }
+  .dashboard-main {
+    padding: 8px 2px 24px 2px;
+  }
+  .dashboard-header h2 {
+    font-size: 1.1rem;
+  }
+  .company-logo-container {
+    padding: 12px 10px;
+  }
+  .company-name {
+    font-size: 13px !important;
+  }
+  .company-item {
+    padding: 8px 6px;
+    font-size: 13px;
+  }
+  .sidebar-toggle-btn {
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    padding: 6px 8px;
+  }
+  .sidebar-close-btn {
+    top: 10px;
+    right: 10px;
+    font-size: 1.7rem;
+  }
+}
+
+/* Hide sidebar and overlay on desktop */
+@media (min-width: 901px) {
+  .sidebar-toggle-btn,
+  .sidebar-close-btn,
+  .sidebar-overlay {
+    display: none !important;
+  }
+  .dashboard-sidebar {
+    position: relative;
+    transform: none !important;
+    width: 250px;
+    max-width: 100%;
+    height: 100vh;
+    z-index: 1;
+    box-shadow: var(--card-shadow);
+    padding-bottom: 0;
+  }
+}
+
+/* Make sure overlay is above everything except sidebar */
+.sidebar-overlay {
+  pointer-events: auto;
+}
+
+/* --- Invoice Form Mobile Responsive Styles --- */
+@media (max-width: 700px) {
+  .invoice-form {
+    padding: 8px 2vw 24px 2vw !important;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  .invoice-form .form-section {
+    padding: 12px 0 18px 0;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+  .invoice-form .section-title {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    padding-left: 2px;
+  }
+  .invoice-form .form-row {
+    flex-direction: column !important;
+    gap: 0;
+    margin-bottom: 0;
+  }
+  .invoice-form .form-group,
+  .invoice-form .form-group.full-width {
+    width: 100% !important;
+    min-width: 0;
+    margin-bottom: 14px;
+    padding-right: 0;
+  }
+  .invoice-form input,
+  .invoice-form select,
+  .invoice-form textarea {
+    width: 100% !important;
+    font-size: 1rem;
+    padding: 10px 12px;
+    margin-bottom: 0;
+  }
+  .invoice-form label {
+    font-size: 0.98rem;
+    margin-bottom: 4px;
+  }
+  .invoice-form .radio-group {
+    flex-direction: row;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .invoice-form .totals table,
+  .invoice-form .totals-section table {
+    font-size: 0.98rem;
+  }
+  .invoice-form .form-actions {
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+    margin-top: 18px !important;
+  }
+  .invoice-form .btn,
+  .invoice-form button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px 0;
+    margin-bottom: 0;
+  }
+  .invoice-form .authorization-warning {
+    font-size: 0.98rem;
+    padding: 8px 6px;
+  }
+}
+
+/* Modern custom scrollbar for sidebar */
+.dashboard-sidebar .company-list {
+  scrollbar-width: thin;
+  scrollbar-color: #c2c9d5 var(--sidebar-bg);
+}
+.dashboard-sidebar .company-list::-webkit-scrollbar-thumb {
+  background: #c2c9d5;
+}
+.dashboard-sidebar .company-list:hover::-webkit-scrollbar-thumb {
+  background: #c2c9d5;
+}
+body.dark-mode .dashboard-sidebar .company-list::-webkit-scrollbar-thumb {
+  background: #c2c9d5;
+}
+body.dark-mode .dashboard-sidebar .company-list:hover::-webkit-scrollbar-thumb {
+  background: #c2c9d5;
+}
+
+/* --- Modern Invoice Form Enhancements --- */
+.modern-invoice-form {
+  background: var(--card-bg);
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(59,130,246,0.08);
+  padding: 32px 28px;
+  font-family: 'Poppins', 'Inter', Arial, sans-serif;
+  border: 1px solid var(--border-color);
+  max-width: 820px;
+  margin: 32px auto;
+}
+
+.invoice-card-section {
+  margin-bottom: 32px;
+  background: var(--secondary-color);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(59,130,246,0.04);
+  padding: 24px 20px;
+  border: 1px solid var(--border-color);
+  transition: box-shadow 0.2s, background 0.2s;
+}
+.invoice-card-section:focus-within,
+.invoice-card-section:hover {
+  box-shadow: 0 4px 24px rgba(59,130,246,0.10);
+}
+
+body.dark-mode .invoice-card-section {
+  background: var(--secondary-color);
+}
+
+.modern-invoice-form .section-title {
+  font-size: 22px;
+  color: var(--primary-color);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+  border-left: 4px solid var(--primary-color);
+  padding-left: 12px;
+  background: none;
+}
+
+.modern-invoice-form input,
+.modern-invoice-form select,
+.modern-invoice-form textarea {
+  border-radius: 8px;
+  border: 1.5px solid var(--border-color);
+  background: var(--card-bg);
+  font-size: 1.05rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: none;
+}
+.modern-invoice-form input:focus,
+.modern-invoice-form select:focus,
+.modern-invoice-form textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.10);
+}
+
+.modern-invoice-form .form-group label {
+  font-weight: 600;
+  color: var(--light-text);
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+.modern-invoice-form .form-row {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 0;
+  flex-wrap: wrap;
+}
+
+.modern-invoice-form .form-group.full-width {
+  width: 100%;
+}
+
+.modern-invoice-form .form-actions {
+  background: none;
+  border: none;
+  box-shadow: none;
+  margin-top: 24px;
+  gap: 16px;
+}
+
+.modern-invoice-form .btn {
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 24px;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.07);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+.modern-invoice-form .btn:hover:not(:disabled) {
+  background: var(--primary-hover);
+  box-shadow: 0 4px 16px rgba(59,130,246,0.13);
+  transform: translateY(-2px);
+}
+
+.modern-invoice-form .btn-secondary {
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  border: 1.5px solid var(--primary-color);
+}
+
+.modern-invoice-form .btn-danger {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+}
+
+.modern-invoice-form .totals table {
+  font-size: 1.08rem;
+  margin-top: 10px;
+}
+
+.modern-invoice-form .grand-total td {
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 1.12rem;
+}
+
+.modern-invoice-form .authorization-warning {
+  border-radius: 8px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+/* --- Invoice Form Delete Button Alignment --- */
+.form-actions {
+  position: relative;
+}
+.form-actions .main-actions {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.form-actions .delete-action {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 700px) {
+  .form-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .form-actions .main-actions {
+    width: 100%;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .form-actions .delete-action {
+    margin-left: 0 !important;
+    margin-top: 18px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 16px;
+    justify-content: flex-start;
+  }
+}

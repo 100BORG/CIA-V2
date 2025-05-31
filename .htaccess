@@ -1,0 +1,33 @@
+# Set MIME types for JavaScript files
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+</IfModule>
+
+# Enable CORS
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+</IfModule>
+
+# Set proper caching for static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  
+  # Cache all scripts for 1 week
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType text/javascript "access plus 1 week"
+  
+  # Cache CSS files for 1 week
+  ExpiresByType text/css "access plus 1 week"
+  
+  # Cache images for 1 month
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 month"
+</IfModule>
+
+# Serve proper index file
+DirectoryIndex index.html
+
+# Error pages
+ErrorDocument 404 /index.html

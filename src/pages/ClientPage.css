@@ -1,0 +1,323 @@
+/* ClientPage.css - Styling for the client management page */
+
+.client-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: var(--text-color);
+  position: relative;
+}
+
+.client-back-btn {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-color);
+  text-decoration: none;
+  margin-bottom: 2rem;
+  transition: color 0.2s;
+  font-size: 0.9rem;
+}
+
+.client-back-btn:hover {
+  color: var(--primary-color);
+}
+
+.client-back-btn svg {
+  margin-right: 0.5rem;
+}
+
+.client-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.client-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+  color: var(--text-color);
+}
+
+.client-header p {
+  margin: 0;
+  color: var(--light-text);
+}
+
+.client-section {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 1.3rem;
+}
+
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--primary-color);
+  color: var(--button-text);
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-add:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.btn-add svg {
+  margin-right: 0.5rem;
+}
+
+.clients-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.client-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.client-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.client-card-header {
+  margin-bottom: 1rem;
+}
+
+.client-info h4 {
+  margin: 0 0 0.25rem 0;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.client-gstin {
+  margin: 0;
+  color: var(--light-text);
+  font-size: 0.85rem;
+}
+
+.client-details {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+.client-details p {
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+.client-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-icon:hover {
+  background-color: var(--primary-color-light);
+}
+
+.btn-icon.danger {
+  color: var(--error-color);
+}
+
+.btn-icon.danger:hover {
+  background-color: var(--error-color-light);
+}
+
+.no-clients {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  border: 1px dashed var(--border-color);
+}
+
+.no-clients p {
+  margin-bottom: 1rem;
+  color: var(--light-text);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--primary-color);
+  color: var(--button-text);
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-align: center;
+  justify-content: center;
+}
+
+.btn:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.btn svg {
+  margin-right: 0.5rem;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-color-light);
+}
+
+.btn-toggle-theme {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.btn-toggle-theme:hover {
+  background-color: var(--primary-color-light);
+}
+
+.client-form {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  margin-bottom: 2rem;
+}
+
+.client-form h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 1.3rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color-light);
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-row .form-group {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.client-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.success-message {
+  background-color: var(--success-color-light);
+  color: var(--success-color);
+  padding: 1rem;
+  border-radius: 4px;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .client-container {
+    padding: 1rem;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .client-form-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .client-form-actions button {
+    width: 100%;
+  }
+}

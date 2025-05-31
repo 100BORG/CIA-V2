@@ -1,0 +1,142 @@
+.bin-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.bin-content {
+  margin-top: 20px;
+}
+
+.bin-description {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: var(--bg-accent);
+  border-radius: 8px;
+}
+
+.bin-info {
+  flex: 1;
+}
+
+.bin-info p {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.bin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.bin-table th,
+.bin-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.bin-table th {
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  font-weight: 600;
+}
+
+.bin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.bin-table tr:hover {
+  background-color: var(--hover-bg);
+}
+
+.bin-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.empty-bin {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: var(--bg-accent);
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.empty-bin-icon {
+  margin-bottom: 20px;
+  color: var(--text-muted);
+}
+
+.empty-bin h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.empty-bin p {
+  margin-bottom: 20px;
+  color: var(--text-muted);
+}
+
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid var(--primary-color);
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .bin-description {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .bin-actions {
+    margin-top: 15px;
+  }
+  
+  .bin-table {
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .bin-action-btn {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+}

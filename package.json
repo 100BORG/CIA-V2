@@ -1,0 +1,41 @@
+{
+  "name": "invoice-generator",
+  "version": "1.0.0",
+  "description": "Invoice generator application with USD and INR support",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "node --watch server.js",
+    "dev:full": "npm run build && npm run serve"
+  },
+  "keywords": [
+    "invoice",
+    "pdf",
+    "generator"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^3.11.0",
+    "@supabase/supabase-js": "^2.49.8",
+    "express": "^4.18.2",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^6.10.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "gh-pages": "^6.3.0",
+    "vite": "^4.3.2"
+  }
+}

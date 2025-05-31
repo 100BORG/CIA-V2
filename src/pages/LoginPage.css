@@ -1,0 +1,836 @@
+/* LoginPage.css - Enhanced with modern design styles */
+
+/* Light mode specific wrapper class - will override dark mode variables */
+.login-page-light-mode {
+  /* Modern color palette */
+  --text-color: #333;
+  --background-color: #f9fafb;
+  --input-background: #f3f4f6;
+  --card-background: rgba(255, 255, 255, 0.97);
+  --heading-color: #111827;
+  --subtitle-color: #6b7280;
+  --label-color: #4b5563;
+  --link-color: #6b7280;
+  --primary-color: #fde047; /* Light mode primary (yellow) */
+  --primary-hover: #facc15;
+  --accent-color: #e9c10e;
+  --error-color: #ef4444;
+  --success-color: #10b981;
+  --button-text: #000; /* Light mode button text */
+  --border-color: #f4f4f5;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  
+  /* Ensure all text and backgrounds use light mode colors */
+  color: var(--text-color);
+  background-color: var(--background-color);
+  
+  /* Take up full screen */
+  width: 100%;
+  min-height: 100vh;
+  
+  /* Default font settings */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  
+  /* Add smooth transition for animations */
+  transition: opacity var(--transition-normal), background-color var(--transition-normal), color var(--transition-normal);
+  opacity: 0;
+}
+
+/* Dark mode for login page - updated to match image */
+.login-page-light-mode.dark-mode {
+  --text-color: #F9FAFB;
+  --background-color: #0B0F19; /* Page background from image */
+  --input-background: #2A2F45; /* Input background from image */
+  --card-background: #1A1D2A;   /* Card background from image */
+  --heading-color: #FFFFFF;
+  --subtitle-color: #A0AEC0;
+  --label-color: #CBD5E0;
+  --link-color: #9F7AEA;       /* Purple links from image */
+  --primary-color: #D69E2E;    /* Gold button from image */
+  --primary-hover: #ECC94B;    /* Lighter gold for hover */
+  --accent-color: #f1dd69;      /* Purple for icons if used */
+  --error-color: #F56565;
+  --success-color: #48BB78;
+  --button-text: #1A202C;       /* Dark text on gold button */
+  --border-color: #4A5568;      /* Input border from image */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.35), 0 2px 4px -1px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35), 0 4px 6px -2px rgba(0, 0, 0, 0.28);
+}
+
+/* Ensure login container in dark mode doesn't use the light mode background image */
+.login-page-light-mode.dark-mode .login-container {
+  background: url("https://pplx-res.cloudinary.com/image/upload/v1746761438/gpt4o_images/jzm1w8mmsr34v4dn7nni.png") no-repeat center center fixed;/* Use the dark background color */
+  background-size: cover;
+  transition: background-color var(--transition-normal); /* Smooth background transition */
+}
+
+/* Adjust brand logo for dark mode if needed */
+.login-page-light-mode.dark-mode .brand-logo {
+  background-color: var(--input-background); /* Match input background or a suitable dark shade */
+}
+
+.login-page-light-mode.dark-mode .brand-name {
+  color: var(--heading-color);
+}
+
+.login-page-light-mode.dark-mode .dot-black {
+  background-color: #000; /* Light dot */
+}
+
+.login-page-light-mode.dark-mode .dot-gray {
+  background-color: var(--subtitle-color); /* Medium light dot */
+}
+
+.login-page-light-mode.dark-mode .dot-yellow {
+  background-color: var(--primary-color); /* Gold dot */
+}
+
+/* Adjust placeholder text color for dark mode */
+.login-page-light-mode.dark-mode .form-input::placeholder {
+  color: #718096; /* Lighter placeholder text */
+  opacity: 0.7;
+}
+
+/* Adjust focus ring for dark mode to be more visible */
+.login-page-light-mode.dark-mode .form-input:focus {
+  outline: none;
+  border-color: var(--primary-color); /* Gold border on focus */
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.3); /* Gold shadow for focus */
+}
+
+/* Ensure footer text is visible in dark mode */
+.login-page-light-mode.dark-mode .login-footer {
+  color: var(--subtitle-color); /* Light gray for footer text */
+  text-shadow: none; /* Remove text shadow if it was for light bg */
+}
+
+/* Adjust image overlay for dark mode if it's still displayed at some breakpoints */
+
+
+.login-page-light-mode.dark-mode .overlay-title {
+  color: var(--heading-color);
+}
+
+.login-page-light-mode.dark-mode .overlay-text {
+  color: var(--subtitle-color);
+}
+
+/* Use the same styling as dashboard for theme toggle */
+.login-theme-switch .theme-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e2e8f0;
+  border-radius: 30px;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.login-theme-switch .theme-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.login-theme-switch .theme-switch .sun-icon,
+.login-theme-switch .theme-switch .moon-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-color);
+  z-index: 1;
+  transition: 0.4s;
+}
+
+.login-theme-switch .theme-switch .sun-icon {
+  color: #f59e0b;
+  margin-left: 5px;
+}
+
+.login-theme-switch .theme-switch .moon-icon {
+  color: #6366f1;
+  margin-right: 5px;
+}
+
+.login-theme-switch input:checked + .slider {
+  background-color: #1e293b;
+}
+
+.login-theme-switch input:checked + .slider:before {
+  transform: translateX(30px);
+}
+
+/* Additional animation for the icons */
+.login-theme-switch input:not(:checked) + .slider .sun-icon {
+  opacity: 1;
+}
+
+.login-theme-switch input:not(:checked) + .slider .moon-icon {
+  opacity: 0.5;
+}
+
+.login-theme-switch input:checked + .slider .sun-icon {
+  opacity: 0.5;
+}
+
+.login-theme-switch input:checked + .slider .moon-icon {
+  opacity: 1;
+}
+
+/* Add a nice glow effect on hover */
+.login-theme-switch .theme-switch:hover .slider:before {
+  box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* Ensure the sun/moon icons are visible and themed with correct positioning */
+.login-theme-switch .sun-icon {
+  color: #f59e0b;
+  margin-left: 5px;
+}
+
+.login-theme-switch .moon-icon {
+  color: #6366f1;
+  margin-right: 5px;
+}
+
+.login-page-light-mode.dark-mode .login-theme-switch .sun-icon {
+  opacity: 0.5;
+}
+
+.login-page-light-mode.dark-mode .login-theme-switch .moon-icon {
+  opacity: 1;
+}
+
+/* Visibility state of icons is managed by these rules */
+
+.login-page-light-mode.dark-mode .remember-me label {
+  color: var(--label-color);
+}
+
+/* Adjust card background for mobile in dark mode */
+@media (max-width: 767px) {
+  .login-page-light-mode.dark-mode .login-card {
+    background: var(--card-background); /* Ensure dark card background on mobile */
+  }
+}
+
+/* Fade-in animation */
+.login-page-light-mode.fade-in {
+  opacity: 1;
+}
+
+/* Form change animation */
+@keyframes formChange {
+  0% { 
+    opacity: 0.8;
+    transform: translateY(10px);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-change {
+  animation: formChange 0.5s ease forwards;
+}
+
+/* Error message styling */
+.error-message {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-left: 4px solid var(--error-color);
+  color: var(--error-color);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+.error-message:before {
+  content: "⚠️";
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+/* Password visibility toggle */
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--label-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
+}
+
+.password-toggle-btn:hover {
+  opacity: 1;
+}
+
+/* Add highlight effect for demo credentials */
+@keyframes highlight {
+  0% { background-color: #f3f4f6; }
+  50% { background-color: rgba(253, 224, 71, 0.3); }
+  100% { background-color: #f3f4f6; }
+}
+
+.highlight-input {
+  animation: highlight 0.8s ease;
+}
+
+/* Remember me checkbox styling */
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+}
+
+.remember-me input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
+.remember-me label {
+  font-size: 0.875rem;
+  color: var(--label-color);
+  cursor: pointer;
+}
+
+/* Login container with previous background image */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 2rem 1rem;
+  /* Default background for light mode */
+  background: url(https://v3.fal.media/files/panda/sO6WFMolI-FrU0SJEi9bR.png) no-repeat center center fixed;
+  background-size: cover;
+  transition: background-color var(--transition-normal); /* Smooth background transition */
+}
+
+/* Card with enhanced shadow and rounded corners - ADJUSTED SIZE */
+.login-card {
+  background-color: var(--card-background);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  max-width: 1000px; /* Increased from 900px */
+  min-height: 620px;  /* Increased from 580px for more height */
+  position: relative;
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+.login-card:hover {
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+/* Content area styling - REDUCED PADDING */
+.login-content {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Brand logo styling */
+.brand {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem; /* Reduced margin */
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+}
+
+.brand-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: transform var(--transition-fast);
+}
+
+.brand:hover .dot {
+  transform: scale(1.1);
+}
+
+.dot-black {
+  background-color: #000;
+}
+
+.dot-gray {
+  background-color: #d1d5db;
+}
+
+.dot-yellow {
+  background-color: var(--primary-color);
+}
+
+.brand-name {
+  margin-left: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--heading-color);
+}
+
+/* Headings styling - REDUCED SIZE */
+.login-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--heading-color);
+  letter-spacing: -0.025em;
+}
+
+.login-subtitle {
+  color: var(--subtitle-color);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Form styling with icons - REDUCED SPACING */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: var(--label-color);
+  font-size: 0.9rem;
+}
+
+.input-icon {
+  margin-right: 0.5rem;
+  color: var(--accent-color);
+  font-size: 1rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background-color: var(--input-background);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  color: var(--text-color);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(253, 224, 71, 0.2);
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+  opacity: 0.7;
+}
+
+.form-input:hover {
+  border-color: #d1d5db;
+}
+
+/* Forgot password link */
+.forgot-link {
+  font-size: 0.875rem;
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.forgot-link:hover {
+  color: #0284c7;
+  text-decoration: underline;
+}
+
+/* Form actions section */
+.form-actions {
+  margin-top: 0.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Button styling */
+.login-button {
+  width: 100%;
+  background-color: var(--primary-color);
+  color: var(--button-text);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.8rem 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.login-button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.button-text {
+  position: relative;
+  z-index: 2;
+}
+
+.button-icon {
+  margin-left: 0.5rem;
+  font-size: 1.2rem;
+  position: relative;
+  z-index: 2;
+  transition: transform var(--transition-fast);
+}
+
+.login-button:hover .button-icon {
+  transform: translateX(3px);
+}
+
+/* Loading spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top-color: var(--button-text);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  animation: spin 0.8s linear infinite;
+  z-index: 1;
+}
+
+.spinner.active {
+  opacity: 1;
+}
+
+/* Mode toggle (login/register) */
+.mode-toggle {
+  text-align: center;
+  margin-top: 0.5rem;
+  color: var(--subtitle-color);
+  font-size: 0.875rem;
+}
+
+.toggle-link {
+  color: var(--accent-color);
+  margin-left: 0.3rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.toggle-link:hover {
+  color: #0284c7;
+  text-decoration: underline;
+}
+
+/* Remove the demo section - as requested */
+/* Demo section styles removed */
+
+/* Right side image */
+.login-image {
+  display: none;
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.overlay-title {
+  color: rgb(32, 31, 31);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
+.overlay-text {
+  color: rgba(20, 20, 20, 0.9);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 90%;
+}
+
+.illustration {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 10s ease;
+  transform-origin: center;
+}
+
+.login-image:hover .illustration {
+  transform: scale(1.05);
+}
+
+/* Footer styling */
+.login-footer {
+  text-align: center;
+  color: #ffffff; /* Changed from var(--subtitle-color) to white */
+  font-size: 0.8rem;
+  padding: 1.5rem 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Added text shadow for better readability */
+}
+
+/* Media queries for responsive design */
+@media (min-width: 768px) {
+  .login-content {
+    width: 55%;
+    padding: 2rem 2.5rem;
+  }
+  
+  .login-image {
+    display: block;
+    width: 45%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .login-card {
+    max-width: 1050px; /* Increased from 900px */
+  }
+  
+  .login-content {
+    width: 50%;
+    padding: 3rem; /* Increased from 2.5rem */
+  }
+  
+  .login-image {
+    width: 50%;
+  }
+  
+  .overlay-title {
+    font-size: 2rem;
+  }
+  
+  .overlay-text {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .login-card {
+    min-height: auto;
+  }
+  
+  .login-title {
+    font-size: 1.8rem;
+  }
+  
+  .login-subtitle {
+    font-size: 0.95rem;
+  }
+  
+  /* Add subtle gradient background when image is hidden */
+  .login-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  }
+}
+
+/* Tablet-specific optimizations */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .login-card {
+    max-width: 90%;
+  }
+  
+  .login-content {
+    padding: 2rem;
+  }
+}
+
+/* Additional mobile optimizations */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1rem;
+  }
+  
+  .login-card {
+    box-shadow: var(--shadow-md);
+  }
+  
+  .login-content {
+    padding: 2rem 1.5rem;
+  }
+  
+  .login-footer {
+    padding: 1rem 0;
+  }
+}
+
+.login-theme-switch {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+/* Theme switch styling to match dashboard exactly */
+.login-theme-switch .theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.login-theme-switch .theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Use the theme-switch styles from App.css to ensure consistency */
+.login-theme-switch .theme-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e2e8f0;
+  border-radius: 30px;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.login-theme-switch .theme-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode specific styles for the toggle */
+.login-page-light-mode.dark-mode .login-theme-switch .theme-switch .slider {
+  background-color: #1e293b;
+}
+
+/* Icon styling within the toggle */
+.login-theme-switch .sun-icon,
+.login-theme-switch .moon-icon {
+  font-size: 16px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  z-index: 1; 
+  transition: opacity 0.3s ease;
+}
+
+/* This section has been updated to match the dashboard implementation */
