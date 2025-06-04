@@ -344,11 +344,10 @@ const InvoicePage = ({ onLogout, darkMode, toggleDarkMode }) => {
       navigate('/dashboard');
     }
   };
-
   // Update company data when a company is updated from Company Page
   useEffect(() => {
     // Handler for when a company is updated
-    const handleCompanyUpdate = (event) => {
+    const handleCompanyUpdate = async (event) => {
       const { company, action } = event.detail;
       console.log(`Company ${action === 'edit' ? 'updated' : 'added'}:`, company);
       
