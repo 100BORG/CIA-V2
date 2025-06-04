@@ -16,6 +16,9 @@ import DescriptionPage from './pages/DescriptionPage'
 import NotificationDisplay from './components/ErrorDisplay'
 import Modal from './components/Modal'
 import { useNotification } from './context/ErrorContext'
+import { supabase } from './config/supabaseClient'
+import { storage } from './utils/storage'
+import { userStore } from './utils/userStore'
 
 // Session timeout in milliseconds (30 minutes)
 const SESSION_TIMEOUT = 30 * 60 * 1000;
@@ -28,64 +31,81 @@ function App() {
   const { notification, setNotification, clearNotification } = useNotification()
   const navigate = useNavigate()
   const location = useLocation()
-
+  const [isLoading, setIsLoading] = useState(true)
   // Check authentication and dark mode on initial load
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
-    setIsAuthenticated(isLoggedIn)
+    async function initializeApp() {
+      setIsLoading(true);
+      
+      // Check for active session
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session);
+      
+      // Get dark mode preference from Supabase
+      if (session) {
+        const darkModePreference = await userStore.getDarkModePreference();
+        setDarkMode(darkModePreference);
+        if (darkModePreference) {
+          document.body.classList.add('dark-mode');
+        }
+        
+        // Update user positions in users table (one-time migration)
+        await updateUserPositions();
+      } else {
+        // Default to dark mode for non-authenticated users
+        setDarkMode(true);
+        document.body.classList.add('dark-mode');
+      }
+      
+      setIsLoading(false);
+    }
     
-    // Check dark mode preference, default to true if not set
-    const darkModeInStorage = localStorage.getItem('darkMode')
-    const savedDarkMode = darkModeInStorage === null ? true : darkModeInStorage === 'true'
-    setDarkMode(savedDarkMode)
-    if (savedDarkMode) {
-      document.body.classList.add('dark-mode')
-    }
-
-    // Update all users with position "client" to "Invoicing Associate"
-    updateUserPositions();
-
+    initializeApp();
+    
+    // Setup auth state change listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsAuthenticated(!!session);
+    });
+    
     // Setup global error handler
-    window.addEventListener('error', handleGlobalError)
+    window.addEventListener('error', handleGlobalError);
+    
     return () => {
-      window.removeEventListener('error', handleGlobalError)
-    }
-  }, [])
+      subscription?.unsubscribe();
+      window.removeEventListener('error', handleGlobalError);
+    };
+  }, []);
 
   // Function to update user positions from "client" to "Invoicing Associate"
-  const updateUserPositions = () => {
-    // Get all users from localStorage
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    let updated = false;
-
-    // Update any user with position "client" to "Invoicing Associate" (if they're not admin)
-    const updatedUsers = users.map(user => {
-      if (user.position && user.position.toLowerCase() === 'client' && user.role !== 'admin') {
-        updated = true;
-        return {
-          ...user,
-          position: 'Invoicing Associate'
-        };
+  const updateUserPositions = async () => {
+    try {
+      // Get users with position "client" who aren't admins
+      const { data: users, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('position', 'client')
+        .neq('role', 'admin');
+      
+      if (error) {
+        console.error('Error fetching users:', error);
+        return;
       }
-      return user;
-    });
-
-    // Save back to localStorage if any user was updated
-    if (updated) {
-      localStorage.setItem('users', JSON.stringify(updatedUsers));
+      
+      // Update positions to "Invoicing Associate"
+      for (const user of users) {
+        const { error: updateError } = await supabase
+          .from('users')
+          .update({ position: 'Invoicing Associate' })
+          .eq('id', user.id);
+          
+        if (updateError) {
+          console.error(`Error updating user ${user.id}:`, updateError);
+        }
+      }
+      
       console.log('Updated users with position "client" to "Invoicing Associate"');
-    }
-
-    // Also update current user if needed
-    const currentUserId = localStorage.getItem('userId');
-    const currentUserPosition = localStorage.getItem('userPosition');
-    const currentUserRole = localStorage.getItem('userRole');
-    
-    if (currentUserId && 
-        currentUserPosition && 
-        currentUserPosition.toLowerCase() === 'client' &&
-        currentUserRole !== 'admin') {
-      localStorage.setItem('userPosition', 'Invoicing Associate');
+    } catch (err) {
+      console.error('Error in updateUserPositions:', err);
     }
   };
 
@@ -95,7 +115,6 @@ function App() {
     const errorMessage = event.error ? event.error.message : 'Unknown error'
     setNotification(`Error: ${errorMessage}`, 'error')
   }
-
   // Update body class when dark mode changes
   useEffect(() => {
     if (darkMode) {
@@ -103,9 +122,8 @@ function App() {
     } else {
       document.body.classList.remove('dark-mode')
     }
-    localStorage.setItem('darkMode', darkMode)
+    storage.set('darkMode', darkMode)
   }, [darkMode])
-
   // Setup session timeout
   useEffect(() => {
     if (isAuthenticated) {
@@ -113,9 +131,9 @@ function App() {
       if (sessionTimer) clearTimeout(sessionTimer)
       
       // Start new timer
-      const timer = setTimeout(() => {
-        // Get last active time from local storage
-        const lastActivity = localStorage.getItem('lastActivity')
+      const timer = setTimeout(async () => {
+        // Get last active time from Supabase
+        const lastActivity = await storage.get('lastActivity')
         const now = new Date().getTime()
         
         // If it's been too long since the last activity, log the user out
@@ -128,7 +146,7 @@ function App() {
       setSessionTimer(timer)
       
       // Update last activity time
-      localStorage.setItem('lastActivity', new Date().getTime().toString())
+      storage.updateLastActivity()
     }
     
     return () => {
@@ -151,10 +169,9 @@ function App() {
       navigate('/login')
     }
   }, [isAuthenticated, location.pathname, navigate])
-
-  const handleLogin = (email, userId, userName, phone, position, role) => {
-    // Store role in localStorage
-    localStorage.setItem('userRole', role || 'user');
+  const handleLogin = async (email, userId, userName, phone, position, role) => {
+    // Store user data in Supabase
+    await storage.set('userRole', role || 'user');
     
     // Set default position based on role
     let finalPosition = position;
@@ -168,41 +185,47 @@ function App() {
       }
     }
     
-    localStorage.setItem('isLoggedIn', 'true')
-    localStorage.setItem('userEmail', email)
-    localStorage.setItem('userId', userId || 'demo_user')
-    localStorage.setItem('userName', userName || email.split('@')[0])
-    localStorage.setItem('userPhone', phone || '')
-    localStorage.setItem('userPosition', finalPosition)
-    localStorage.setItem('lastLogin', new Date().toString())
-    localStorage.setItem('lastActivity', new Date().getTime().toString())
+    // Store user data in Supabase user_preferences
+    await storage.set('isLoggedIn', true);
+    await storage.set('userEmail', email);
+    await storage.set('userId', userId || 'demo_user');
+    await storage.set('userName', userName || email.split('@')[0]);
+    await storage.set('userPhone', phone || '');
+    await storage.set('userPosition', finalPosition);
+    await storage.set('lastLogin', new Date().toString());
+    await storage.updateLastActivity();
 
     // --- Ensure default descriptions are saved after login ---
-    if (!localStorage.getItem('serviceDescriptions')) {
+    const existingDescriptions = await storage.get('serviceDescriptions');
+    if (!existingDescriptions) {
       const defaultDescriptions = [
         { id: 1, text: 'US Federal Corporation Income Tax Return (Form 1120)' },
         { id: 2, text: 'Foreign related party disclosure form with respect to a foreign subsidiary (Form 5417)' },
         { id: 3, text: 'Foreign related party disclosure form with respect to a foreign shareholders (Form 5472)' },
         { id: 4, text: 'Application for Automatic Extension of Time To File Business Income Tax (Form 7004)' }
       ];
-      localStorage.setItem('serviceDescriptions', JSON.stringify(defaultDescriptions));
+      await storage.set('serviceDescriptions', defaultDescriptions);
     }
     // --------------------------------------------------------
 
-    setIsAuthenticated(true)
+    setIsAuthenticated(true);
     window.dispatchEvent(new Event('login'));
-    navigate('/')
+    navigate('/');
   }
 
   const handleLogout = () => {
     setShowLogoutModal(true);
   };
-
-  const confirmLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userPosition');
+  const confirmLogout = async () => {
+    // Sign out with Supabase Auth
+    await supabase.auth.signOut();
+    
+    // Remove user-specific data
+    await storage.remove('isLoggedIn');
+    await storage.remove('userEmail');
+    await storage.remove('userRole');
+    await storage.remove('userPosition');
+    
     setIsAuthenticated(false);
     setShowLogoutModal(false);
     navigate('/login');

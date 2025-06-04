@@ -191,7 +191,7 @@ const LoginPage = ({ onLogin, darkMode, toggleDarkMode }) => {
                   <div className="dot dot-yellow"></div>
                 </div>
               </div>
-              <span className="brand-name">Sama Tributa Solutions</span>
+              <span className="brand-name">ML Finance Solutions</span>
             </div>
             
             <h1 className="login-title">{isRegistering ? 'Create Account' : 'Welcome Back'}</h1>
@@ -375,7 +375,7 @@ const LoginPage = ({ onLogin, darkMode, toggleDarkMode }) => {
         </div>
         
         <div className="login-footer">
-          <p>&copy; {new Date().getFullYear()} Sama Tributa Solutions. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} ML Finance Solutions. All rights reserved.</p>
         </div>
       </div>
     </div>

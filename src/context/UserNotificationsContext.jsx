@@ -33,10 +33,12 @@ export const UserNotificationsProvider = ({ children }) => {
       window.removeEventListener('invoicesUpdated', loadUserNotifications);
     };
   }, []);
-  
-  // Load notifications for current user
+    // Load notifications for current user
   const loadUserNotifications = async () => {
-    const userId = localStorage.getItem('userId');
+    // Get current user from Supabase
+    const { data: { user } } = await supabase.auth.getUser();
+    const userId = user?.id;
+    
     if (userId) {
       // Load notifications from Supabase
       const { data, error } = await supabase
@@ -54,15 +56,17 @@ export const UserNotificationsProvider = ({ children }) => {
       setUnreadCount(0);
     }
   };
-  
-  // Add a new notification
-  const addNotification = (message, type = 'info', data = {}) => {
-    const userId = localStorage.getItem('userId');
+    // Add a new notification
+  const addNotification = async (message, type = 'info', data = {}) => {
+    // Get current user from Supabase
+    const { data: { user } } = await supabase.auth.getUser();
+    const userId = user?.id;
     
     if (!userId) return false;
     
     const newNotification = {
       id: `notification_${Date.now()}`,
+      user_id: userId,
       timestamp: new Date().toISOString(),
       message,
       type, // 'info', 'success', 'warning', 'error'
@@ -74,19 +78,22 @@ export const UserNotificationsProvider = ({ children }) => {
     setNotifications(prevNotifications => [newNotification, ...prevNotifications]);
     setUnreadCount(prevCount => prevCount + 1);
     
-    // Store in localStorage
-    const userNotifications = JSON.parse(localStorage.getItem(`notifications_${userId}`)) || [];
-    localStorage.setItem(`notifications_${userId}`, JSON.stringify([
-      newNotification,
-      ...userNotifications
-    ]));
+    // Store in Supabase
+    const { error } = await supabase
+      .from('notifications')
+      .insert([newNotification]);
+        if (error) {
+      console.error('Error storing notification in Supabase:', error);
+      return false;
+    }
     
     return true;
   };
-  
-  // Mark a notification as read
-  const markAsRead = (notificationId) => {
-    const userId = localStorage.getItem('userId');
+    // Mark a notification as read
+  const markAsRead = async (notificationId) => {
+    // Get current user from Supabase
+    const { data: { user } } = await supabase.auth.getUser();
+    const userId = user?.id;
     
     if (!userId) return false;
     
@@ -103,15 +110,25 @@ export const UserNotificationsProvider = ({ children }) => {
     const unread = updatedNotifications.filter(notification => !notification.read).length;
     setUnreadCount(unread);
     
-    // Update localStorage
-    localStorage.setItem(`notifications_${userId}`, JSON.stringify(updatedNotifications));
+    // Update in Supabase
+    const { error } = await supabase
+      .from('notifications')
+      .update({ read: true })
+      .eq('id', notificationId)
+      .eq('user_id', userId);
+    
+    if (error) {
+      console.error('Error updating notification in Supabase:', error);
+      return false;
+    }
     
     return true;
   };
-  
-  // Mark all notifications as read
-  const markAllAsRead = () => {
-    const userId = localStorage.getItem('userId');
+    // Mark all notifications as read
+  const markAllAsRead = async () => {
+    // Get current user from Supabase
+    const { data: { user } } = await supabase.auth.getUser();
+    const userId = user?.id;
     
     if (!userId) return false;
     
@@ -124,15 +141,24 @@ export const UserNotificationsProvider = ({ children }) => {
     setNotifications(updatedNotifications);
     setUnreadCount(0);
     
-    // Update localStorage
-    localStorage.setItem(`notifications_${userId}`, JSON.stringify(updatedNotifications));
+    // Update in Supabase
+    const { error } = await supabase
+      .from('notifications')
+      .update({ read: true })
+      .eq('user_id', userId);
+    
+    if (error) {
+      console.error('Error updating notifications in Supabase:', error);
+      return false;
+    }
     
     return true;
   };
-  
-  // Clear all notifications
-  const clearAllNotifications = () => {
-    const userId = localStorage.getItem('userId');
+    // Clear all notifications
+  const clearAllNotifications = async () => {
+    // Get current user from Supabase
+    const { data: { user } } = await supabase.auth.getUser();
+    const userId = user?.id;
     
     if (!userId) return false;
     
@@ -140,26 +166,47 @@ export const UserNotificationsProvider = ({ children }) => {
     setNotifications([]);
     setUnreadCount(0);
     
-    // Update localStorage
-    localStorage.setItem(`notifications_${userId}`, JSON.stringify([]));
+    // Delete from Supabase
+    const { error } = await supabase
+      .from('notifications')
+      .delete()
+      .eq('user_id', userId);
+    
+    if (error) {
+      console.error('Error deleting notifications from Supabase:', error);
+      return false;
+    }
     
     return true;
   };
-
   // Remove a notification by id
   const removeNotification = async (notificationId) => {
-    const userId = localStorage.getItem('userId');
+    // Get current user from Supabase
+    const { data: { user } } = await supabase.auth.getUser();
+    const userId = user?.id;
+    
     if (!userId) return false;
+    
     // Remove from Supabase
-    await supabase.from('notifications').delete().eq('id', notificationId);
+    const { error } = await supabase
+      .from('notifications')
+      .delete()
+      .eq('id', notificationId)
+      .eq('user_id', userId);
+    
+    if (error) {
+      console.error('Error deleting notification from Supabase:', error);
+      return false;
+    }
+    
     // Remove from local state
     const updatedNotifications = notifications.filter(n => n.id !== notificationId);
     setNotifications(updatedNotifications);
+    
     // Update unread count
     const unread = updatedNotifications.filter(n => !n.read).length;
     setUnreadCount(unread);
-    // Update localStorage (optional, for offline support)
-    localStorage.setItem(`notifications_${userId}`, JSON.stringify(updatedNotifications));
+    
     return true;
   };
 
