@@ -14,13 +14,53 @@ const UserRoleContext = createContext({
   setCurrentUser: () => {},
 });
 
+
+import { supabase } from '../config/supabaseClient';
+
 export const UserRoleProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(defaultUser);
   const isAdmin = currentUser.role === 'admin';
 
-  // Example: Replace with real user loading logic
   useEffect(() => {
-    // Fetch user data here if needed
+    const fetchUserProfile = async () => {
+      try {
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        if (userError) {
+          console.error('Supabase auth error:', userError);
+        }
+        if (user) {
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('id, full_name, role, position')
+            .eq('id', user.id)
+            .single();
+          if (profileError) {
+            console.error('Supabase profile fetch error:', profileError);
+          }
+          if (profile) {
+            setCurrentUser({
+              id: profile.id,
+              name: profile.full_name || user.email,
+              role: profile.role || 'user',
+              position: profile.position || '',
+            });
+          } else {
+            setCurrentUser({
+              id: user.id,
+              name: user.email,
+              role: 'user',
+              position: '',
+            });
+          }
+        } else {
+          setCurrentUser(defaultUser);
+        }
+      } catch (err) {
+        console.error('Error in fetchUserProfile:', err);
+        setCurrentUser(defaultUser);
+      }
+    };
+    fetchUserProfile();
   }, []);
 
   return (

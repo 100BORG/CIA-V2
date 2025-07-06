@@ -52,7 +52,8 @@ const InvoicePage = ({ onLogout, darkMode, toggleDarkMode }) => {
     loadUserData();
   }, [currentUser, isAdmin]);
   
-  // Get the selected company from Supabase if available  const [selectedCompany, setSelectedCompany] = useState(null);
+  // Get the selected company from Supabase if available
+  const [selectedCompany, setSelectedCompany] = useState(null);
   
   // Load selected company from Supabase
   useEffect(() => {
