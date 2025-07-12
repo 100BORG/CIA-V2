@@ -71,7 +71,7 @@ const InvoicePage = ({ onLogout, darkMode, toggleDarkMode }) => {
       }
     ],
     // Bank details - prefilled with requested values
-    accountName: 'Samatributa Solutions LLP',
+    accountName: 'ML Solutions LLP',
     bankName: 'Yes Bank Limited',
     accountNumber: '1111111',
     ifscCode: '11111',
@@ -239,7 +239,7 @@ const InvoicePage = ({ onLogout, darkMode, toggleDarkMode }) => {
         senderAddress: selectedCompany?.address || '', // Populate company address
         senderGSTIN: selectedCompany?.gstin || '', // Populate company GSTIN
         // Bank details - prefilled with requested values
-        accountName: 'Samatributa Solutions LLP',
+        accountName: 'ML Solutions LLP',
         bankName: 'Yes Bank Limited',
         accountNumber: '1111111',
         ifscCode: '11111',
@@ -402,7 +402,7 @@ const InvoicePage = ({ onLogout, darkMode, toggleDarkMode }) => {
               alt={selectedCompany?.name || companyName}
               style={{ maxHeight: '40px' }}
             />
-            <span className="company-name-header-text">{selectedCompany?.name || companyName}</span>
+            <span className="company-name-header-text">Invoice Form</span>
           </div>
           <div className="user-actions" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             {/* Save Invoice button styled like the bottom one */}
