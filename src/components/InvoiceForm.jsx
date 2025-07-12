@@ -4,7 +4,6 @@ import emailService from '../services/emailService';
 import pdfService from '../services/pdfService';
 import exchangeRateService from '../services/exchangeRateService';
 import invoiceLogic from '../lib/invoiceLogic';
-import { invoiceStore } from '../utils/invoiceStore';
 import { useNotification } from '../context/NotificationContext';
 import Modal from './Modal';
 import html2canvas from 'html2canvas';
@@ -133,11 +132,23 @@ const InvoiceForm = ({
       invoiceNumber: invoiceLogic.generateInvoiceNumber(selectedClient.name || 'CUST', true)
     }));
   };
+
   // Generate invoice number with format CUST-YYYYMMDD-XXXX (now using recipientName)
-  const generateInvoiceNumber = async () => {
-    // Use invoiceStore utility to generate invoice number
+  const generateInvoiceNumber = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const date = `${year}${month}${day}`;
+    // Get customer prefix (first 4 letters)
     const customerName = invoiceData.recipientName || 'CUST';
-    const invoiceNumber = await invoiceStore.generateInvoiceNumber(customerName);
+    const customerPrefix = customerName.trim().substring(0, 4).toUpperCase();
+    const lastSerialKey = `invoiceSerial_${date}`;
+    let lastSerial = parseInt(localStorage.getItem(lastSerialKey) || '0');
+    lastSerial += 1;
+    localStorage.setItem(lastSerialKey, lastSerial.toString());
+    const serialFormatted = String(lastSerial).padStart(4, '0');
+    const invoiceNumber = `${customerPrefix}-${date}-${serialFormatted}`;
     return invoiceNumber;
   };
 
@@ -321,33 +332,13 @@ const InvoiceForm = ({
       recipientWebsite: e.target.value
     }));
   };
-    // Update bank details fields
+  
+  // Update bank details fields
   const updateBankDetails = (field, value) => {
-    // Handle accountName field differently to avoid schema cache issues
-    if (field === 'accountName') {
-      // Use a nested structure to avoid direct access to accountName column
-      setInvoiceData(prevData => {
-        // Create a bankDetails object if it doesn't exist
-        const bankDetails = prevData.bankDetails || {};
-        
-        return {
-          ...prevData,
-          // Store accountName in bankDetails JSON field
-          bankDetails: {
-            ...bankDetails,
-            accountName: value
-          },
-          // Keep the direct field too for backward compatibility with UI
-          [field]: value
-        };
-      });
-    } else {
-      // Handle other bank fields normally
-      setInvoiceData(prevData => ({
-        ...prevData,
-        [field]: value
-      }));
-    }
+    setInvoiceData(prevData => ({
+      ...prevData,
+      [field]: value
+    }));
   };
   
   // Add comprehensive form validation
@@ -622,8 +613,8 @@ const InvoiceForm = ({
               style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
             >
               <option value="">Select Company</option>
-              <option value="BCDE Solutions LLP">BCDE Solutions LLP</option>
-              <option value="ABC Solutions LLP">ABC Solutions LLP</option>
+              <option value="Suprayoga Solutions LLP">Suprayoga Solutions LLP</option>
+              <option value="Samatributa Solutions LLP">Samatributa Solutions LLP</option>
             </select>
           </div>
         </div>
@@ -930,12 +921,13 @@ const InvoiceForm = ({
         <h2 className="section-title" style={{ fontSize: 22, color: 'var(--primary-color)', fontWeight: 700, letterSpacing: 1, marginBottom: 18, borderLeft: '4px solid var(--primary-color)', paddingLeft: 12 }}>Beneficiary Account Details</h2>
         
         <div className="form-row">
-          <div className="form-group full-width">            <label htmlFor="accountName">Account Name</label>
+          <div className="form-group full-width">
+            <label htmlFor="accountName">Account Name</label>
             <input 
               type="text" 
               id="accountName" 
               name="accountName" 
-              value={(invoiceData.bankDetails?.accountName || invoiceData.accountName || '')} 
+              value={invoiceData.accountName || ''} 
               onChange={(e) => updateBankDetails('accountName', e.target.value)} 
               placeholder="Account Name"
               disabled={!isAuthorized}

@@ -1,0 +1,68 @@
+name: Create GitHub Issues
+
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  create-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Issues
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issues = [
+              {
+                title: "Implement Sidebar Client Selector and Search",
+                body: "- [ ] Add dropdown to select companies\n- [ ] Add search bar to filter clients/invoices\n- [ ] Display clickable client cards\n- [ ] Fetch client-specific invoices",
+                labels: ["enhancement", "UI", "dashboard"]
+              },
+              {
+                title: "Add Top Bar Profile, Sort, and Filter Options",
+                body: "- [ ] Add profile dropdown with options\n- [ ] Sort invoices by amount/date\n- [ ] Filter by status/date",
+                labels: ["enhancement", "UX", "dashboard"]
+              },
+              {
+                title: "Invoice Table: Card and Detailed View Toggle",
+                body: "- [ ] Toggle between card and detailed table views\n- [ ] Show client name, amount, date, status\n- [ ] Use clean component design",
+                labels: ["feature", "UI", "dashboard"]
+              },
+              {
+                title: "Table Pagination, Export Options, and Skeleton Loaders",
+                body: "- [ ] Add pagination controls\n- [ ] Export to PDF, Excel\n- [ ] Show skeleton loaders while fetching data",
+                labels: ["feature", "UX", "dashboard"]
+              },
+              {
+                title: "Design Invoice Create/Edit Form UI",
+                body: "- [ ] Create form with input fields for new invoice\n- [ ] Edit functionality with pre-filled values\n- [ ] Save/cancel actions\n- [ ] Optional validation feedback",
+                labels: ["feature", "UI", "form"]
+              },
+              {
+                title: "Invoice View Page and PDF Download Integration",
+                body: "- [ ] Detailed view of an invoice\n- [ ] Company info, client info, invoice line items, amount, etc.\n- [ ] Button to generate PDF download",
+                labels: ["feature", "UI", "PDF"]
+              },
+              {
+                title: "Responsive Design and Dark Mode Toggle",
+                body: "- [ ] Make layout mobile-friendly\n- [ ] Add dark mode switch (optional)",
+                labels: ["enhancement", "responsive", "theme"]
+              },
+              {
+                title: "Navigation Integration and Routing for Pages",
+                body: "- [ ] Set up proper routing\n- [ ] Navigation bar or side nav for Dashboard, Create Invoice, Settings etc.",
+                labels: ["task", "navigation"]
+              }
+            ];
+
+            for (const issue of issues) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: issue.title,
+                body: issue.body,
+                labels: issue.labels,
+              });
+            }

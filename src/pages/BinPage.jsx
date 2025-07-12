@@ -6,28 +6,16 @@ import { supabase } from '../config/supabaseClient';
 import '../App.css';
 import './BinPage.css';
 
-const BinPage = ({ onLogout, darkMode, toggleDarkMode }) => {  const navigate = useNavigate();
+const BinPage = ({ onLogout, darkMode, toggleDarkMode }) => {
+  const navigate = useNavigate();
   const [deletedInvoices, setDeletedInvoices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentUserId, setCurrentUserId] = useState(null);
-
-  // Get current user on component mount
-  useEffect(() => {
-    const getCurrentUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        setCurrentUserId(user.id);
-      }
-    };
-    getCurrentUser();
-  }, []);
+  const currentUserId = localStorage.getItem('userId');
 
   // Load deleted invoices from Supabase on component mount
   useEffect(() => {
-    if (currentUserId) {
-      loadDeletedInvoices();
-    }
-  }, [currentUserId]);
+    loadDeletedInvoices();
+  }, []);
 
   // Load deleted invoices from Supabase
   const loadDeletedInvoices = async () => {

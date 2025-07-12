@@ -14,11 +14,11 @@ import { supabase } from '../config/supabaseClient';
 
 const DashboardPage = ({ onLogout, darkMode, toggleDarkMode }) => {
   const navigate = useNavigate();
-  const { isAdmin, hasPermission, currentUser } = useUserRole();
+  const { isAdmin, hasPermission } = useUserRole();
   const { addNotification } = useUserNotifications();
   
-  // Use currentUser from UserRoleContext instead of localStorage
-  const [currentUserName, setCurrentUserName] = useState('User');
+  // Get current user name from localStorage for loading state
+  const currentUserName = localStorage.getItem('userName') || 'User';
   
   // Add state for bulk download progress
   const [isDownloading, setIsDownloading] = useState(false);
@@ -42,25 +42,29 @@ const DashboardPage = ({ onLogout, darkMode, toggleDarkMode }) => {
   const [selectedAssignee, setSelectedAssignee] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   
-  // Invoice status state - store in Supabase user_preferences
-  const [invoiceStatuses, setInvoiceStatuses] = useState({});
+  // Invoice status state
+  const [invoiceStatuses, setInvoiceStatuses] = useState(() => {
+    const savedStatuses = localStorage.getItem('invoiceStatuses');
+    return savedStatuses ? JSON.parse(savedStatuses) : {};
+  });
   
   // Sort state
   const [sortField, setSortField] = useState('date');
   const [sortDirection, setSortDirection] = useState('desc');
   const [showSortOptions, setShowSortOptions] = useState(false);
-  // State for saved invoices
+    // State for saved invoices
   const [savedInvoices, setSavedInvoices] = useState([]);
   
   // Loading state for initial dashboard data fetch
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   
-  // Current user information from UserRoleContext
-  const [currentUserId, setCurrentUserId] = useState('');
-  const [isCurrentUserAdmin, setIsCurrentUserAdmin] = useState(false);
+  // Current user ID
+  const currentUserId = localStorage.getItem('userId') || 'demo_user';
+  const currentUser = users.find(u => u.id === currentUserId);
+  const isCurrentUserAdmin = currentUser?.role === 'admin';
 
   // State for current user's avatar
-  const [userAvatar, setUserAvatar] = useState('');
+  const [userAvatar, setUserAvatar] = useState(localStorage.getItem('userAvatar') || '');
 
   // --- Auto-select invoicing associate after login ---
   useEffect(() => {
@@ -86,24 +90,19 @@ const DashboardPage = ({ onLogout, darkMode, toggleDarkMode }) => {
 
   // Sidebar toggle for mobile
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  // Update Supabase storage when selected company changes
+
+  // Update localStorage when selected company changes
   useEffect(() => {
     if (selectedCompany) {
-      const updateSelectedCompany = async () => {
-        await storage.set('selectedCompany', selectedCompany);
-      };
-      updateSelectedCompany();
+      localStorage.setItem('selectedCompany', JSON.stringify(selectedCompany));
       setShowAllInvoices(false);
       setSelectedAssignee(null);
     }
   }, [selectedCompany]);
   
-  // Save invoice statuses to Supabase when they change
+  // Save invoice statuses to localStorage when they change
   useEffect(() => {
-    const updateInvoiceStatuses = async () => {
-      await storage.set('invoiceStatuses', invoiceStatuses);
-    };
-    updateInvoiceStatuses();
+    localStorage.setItem('invoiceStatuses', JSON.stringify(invoiceStatuses));
   }, [invoiceStatuses]);
     // Fetch all data from Supabase on mount
   useEffect(() => {
@@ -127,7 +126,8 @@ const DashboardPage = ({ onLogout, darkMode, toggleDarkMode }) => {
     };
     fetchAll();
   }, []);
-    // Presave default service descriptions for all users on app load
+  
+  // Presave default service descriptions for all users on app load
   useEffect(() => {
     const defaultDescriptions = [
       { id: 1, text: 'US Federal Corporation Income Tax Return (Form 1120)' },
@@ -135,15 +135,10 @@ const DashboardPage = ({ onLogout, darkMode, toggleDarkMode }) => {
       { id: 3, text: 'Foreign related party disclosure form with respect to a foreign shareholders (Form 5472)' },
       { id: 4, text: 'Application for Automatic Extension of Time To File Business Income Tax (Form 7004)' }
     ];
-    
-    const checkAndSetDescriptions = async () => {
-      const savedDescriptions = await storage.get('serviceDescriptions');
-      if (!savedDescriptions) {
-        await storage.set('serviceDescriptions', defaultDescriptions);
-      }
-    };
-    
-    checkAndSetDescriptions();
+    const savedDescriptions = localStorage.getItem('serviceDescriptions');
+    if (!savedDescriptions) {
+      localStorage.setItem('serviceDescriptions', JSON.stringify(defaultDescriptions));
+    }
   }, []);
   
   // Replace all localStorage CRUD for companies, clients, users, invoices with Supabase queries in all relevant handlers
@@ -636,12 +631,13 @@ const DashboardPage = ({ onLogout, darkMode, toggleDarkMode }) => {
             </tbody>
           </table>
         </div>
-          <!-- 7. Bank Details -->
+        
+        <!-- 7. Bank Details -->
         <div class="bank-details">
           <h3>Beneficiary Account Details</h3>
           <div class="account-info">
             <div class="info-row full-width">
-              <p><strong>Account Name:</strong> ${invoiceData.bankDetails?.accountName || invoiceData.accountName || 'N/A'}</p>
+              <p><strong>Account Name:</strong> ${invoiceData.accountName || 'N/A'}</p>
             </div>
             <div class="info-row full-width">
               <p><strong>Bank Name:</strong> ${invoiceData.bankName || 'N/A'}</p>
@@ -818,33 +814,29 @@ const DashboardPage = ({ onLogout, darkMode, toggleDarkMode }) => {
       return sortDirection === 'asc' ? comparison : -comparison;
     });
   };
-    // Effect to sync user avatar from users array
+  
+  // Effect to sync user avatar from users array
   useEffect(() => {
     // Find current user in users array to get the latest avatar
-    const getUserAvatar = async () => {
-      const loggedInUserId = await storage.get('userId');
-      if (loggedInUserId) {
-        const currentUser = users.find(user => user.id === loggedInUserId);
-        if (currentUser && currentUser.avatar) {
-          // Update local state and Supabase storage if needed
-          setUserAvatar(currentUser.avatar);
-          const storedAvatar = await storage.get('userAvatar');
-          if (currentUser.avatar !== storedAvatar) {
-            await storage.set('userAvatar', currentUser.avatar);
-          }
-        } else {
-          setUserAvatar('');
-          await storage.remove('userAvatar');
+    const loggedInUserId = localStorage.getItem('userId');
+    if (loggedInUserId) {
+      const currentUser = users.find(user => user.id === loggedInUserId);
+      if (currentUser && currentUser.avatar) {
+        // Update local state and localStorage if needed
+        setUserAvatar(currentUser.avatar);
+        if (currentUser.avatar !== localStorage.getItem('userAvatar')) {
+          localStorage.setItem('userAvatar', currentUser.avatar);
         }
+      } else {
+        setUserAvatar('');
+        localStorage.removeItem('userAvatar');
       }
-    };
-    
-    getUserAvatar();
+    }
 
     // Listen for profile updates
-    const handleUserUpdated = async () => {
-      const updatedUsers = await storage.get('users', []);
-      const loggedInUserId = await storage.get('userId');
+    const handleUserUpdated = () => {
+      const updatedUsers = JSON.parse(localStorage.getItem('users')) || [];
+      const loggedInUserId = localStorage.getItem('userId');
       const updatedUser = updatedUsers.find(user => user.id === loggedInUserId);
       if (updatedUser && updatedUser.avatar) {
         setUserAvatar(updatedUser.avatar);
@@ -955,9 +947,9 @@ const DashboardPage = ({ onLogout, darkMode, toggleDarkMode }) => {
       <aside className={`dashboard-sidebar${sidebarOpen ? ' open' : ''}`}>
         {/* Removed sidebar-close-btn ("X") button */}
         <div className="company-logo-container">
-          <img src="/images/c-logo.png" alt="ML Solution" className="main-company-logo" />
+          <img src="/images/c-logo.png" alt="Samatributa Invoice" className="main-company-logo" />
           <div className="sidebar-title">
-            <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '2px', color: 'var(--sidebar-text)' }}>ML Solution</h3>
+            <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '2px', color: 'var(--sidebar-text)' }}>Samatributa</h3>
             <p style={{ fontSize: '12px', fontWeight: '400', margin: 0, color: 'var(--light-text)', opacity: 0.8 }}>Invoice Automation</p>
           </div>
         </div>
@@ -1304,10 +1296,11 @@ const DashboardPage = ({ onLogout, darkMode, toggleDarkMode }) => {
                 justifyContent: 'center',
                 color: 'var(--dark-text)',
                 fontWeight: 'bold'
-              }}>                {(currentUser?.name?.[0] || 'U').toUpperCase()}
+              }}>
+                {(localStorage.getItem('userName') || 'U')[0].toUpperCase()}
               </div>
             )}
-            <span>{currentUser?.name || 'User'}</span>
+            <span>{currentUser?.name || (localStorage.getItem('userName') || 'User')}</span>
             {isAdmin && <span className="admin-badge" style={{
               fontSize: '10px',
               padding: '2px 5px',

@@ -163,7 +163,7 @@ export const ClassicTemplate = ({ invoiceData, normalizedItems, formatDate, defa
         <h3>Beneficiary Account Details</h3>
         <div className="account-info">
           <div className="info-row full-width">
-            <p><strong>Account Name:</strong> {invoiceData.bankDetails?.accountName || invoiceData.accountName || extractAccountName(invoiceData.notes)}</p>
+            <p><strong>Account Name:</strong> {invoiceData.accountName || extractAccountName(invoiceData.notes)}</p>
           </div>
           <div className="info-row full-width">
             <p><strong>Bank Name:</strong> {invoiceData.bankName || extractBankName(invoiceData.notes)}</p>
@@ -409,7 +409,7 @@ export const ModernTemplate = ({ invoiceData, normalizedItems, formatDate, defau
             gap: '5px'
           }}>
             <p style={{ margin: 0, fontSize: '13px', color: '#888' }}>Account Name</p>
-            <p style={{ margin: 0, fontWeight: '600', color: '#333' }}>{invoiceData.bankDetails?.accountName || invoiceData.accountName || extractAccountName(invoiceData.notes) || 'N/A'}</p>
+            <p style={{ margin: 0, fontWeight: '600', color: '#333' }}>{invoiceData.accountName || extractAccountName(invoiceData.notes) || 'N/A'}</p>
           </div>
           <div style={{ 
             padding: '10px 15px', 
@@ -808,7 +808,7 @@ export const ProfessionalTemplate = ({ invoiceData, normalizedItems, formatDate,
           }}>
             <div>
               <p style={{ margin: '0 0 5px 0', color: '#999', fontSize: '13px' }}>Account Name</p>
-              <p style={{ margin: '0', fontWeight: '600', fontSize: '15px', color: '#444' }}>{invoiceData.bankDetails?.accountName || invoiceData.accountName || extractAccountName(invoiceData.notes) || 'N/A'}</p>
+              <p style={{ margin: '0', fontWeight: '600', fontSize: '15px', color: '#444' }}>{invoiceData.accountName || extractAccountName(invoiceData.notes) || 'N/A'}</p>
             </div>
             <div>
               <p style={{ margin: '0 0 5px 0', color: '#999', fontSize: '13px' }}>Bank Name</p>

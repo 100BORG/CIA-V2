@@ -35,7 +35,7 @@ body.dark-mode {
   --border-color: rgba(19, 18, 18, 0.637);
   --sidebar-bg: #111827; /* Dark sidebar for dark mode */
   --sidebar-text: #f9fafb; /* Light text for sidebar in dark mode */
-  --bg-color: #232937;
+  --bg-color: #111827;
   --preview-bg: #1e2130;
   --preview-text: #f9fafb;
   --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.15);

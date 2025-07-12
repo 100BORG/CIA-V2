@@ -8,18 +8,6 @@ import { defaultLogo, companyName } from '../assets/logoData';
 import { useUserRole } from '../context/UserRoleContext';
 import Modal from '../components/Modal';
 import { supabase } from '../config/supabaseClient';
-import storage from '../utils/storage';
-
-// Helper functions for async Supabase storage operations
-const safeGetItem = async (key, defaultValue = null) => {
-  try {
-    const value = await storage.get(key, defaultValue);
-    return value;
-  } catch (error) {
-    console.error(`Error accessing Supabase storage for key ${key}:`, error);
-    return defaultValue;
-  }
-};
 
 const InvoicePage = ({ onLogout, darkMode, toggleDarkMode }) => {
   const { id } = useParams();
@@ -30,39 +18,20 @@ const InvoicePage = ({ onLogout, darkMode, toggleDarkMode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [showBackModal, setShowBackModal] = useState(false);
   const [pendingBack, setPendingBack] = useState(false);
-  const [lastSavedInvoice, setLastSavedInvoice] = useState(null);  // Get current user ID and information from UserRole context and Supabase
-  const { currentUser } = useUserRole();
-  const [currentUserId, setCurrentUserId] = useState('anonymous');
-  const [currentUserName, setCurrentUserName] = useState('Anonymous User');
-  const [currentUserRole, setCurrentUserRole] = useState('user');
-  const [currentUserPosition, setCurrentUserPosition] = useState('');
-  const [isInvoicingAssociate, setIsInvoicingAssociate] = useState(false);
+  const [lastSavedInvoice, setLastSavedInvoice] = useState(null);
   
-  // Load user data from Supabase
-  useEffect(() => {
-    const loadUserData = async () => {
-      if (currentUser) {
-        setCurrentUserId(currentUser.id);
-        setCurrentUserName(currentUser.name || 'Anonymous User');
-        setCurrentUserRole(currentUser.role || 'user');
-        setCurrentUserPosition(currentUser.position || '');
-        setIsInvoicingAssociate(!isAdmin && (currentUser.position === 'Invoicing Associate'));
-      }
-    };
-    loadUserData();
-  }, [currentUser, isAdmin]);
+  // Get current user ID and information
+  const currentUserId = localStorage.getItem('userId');
+  const currentUserName = localStorage.getItem('userName');
+  const currentUserRole = localStorage.getItem('userRole');
+  const currentUserPosition = localStorage.getItem('userPosition');
+  const isInvoicingAssociate = !isAdmin && currentUserPosition === 'Invoicing Associate';
   
-  // Get the selected company from Supabase if available
-  const [selectedCompany, setSelectedCompany] = useState(null);
-  
-  // Load selected company from Supabase
-  useEffect(() => {
-    const loadSelectedCompany = async () => {
-      const company = await storage.get('selectedCompany', null);
-      setSelectedCompany(company);
-    };
-    loadSelectedCompany();
-  }, []);
+  // Get the selected company from localStorage if available
+  const [selectedCompany, setSelectedCompany] = useState(() => {
+    const companyData = localStorage.getItem('selectedCompany');
+    return companyData ? JSON.parse(companyData) : null;
+  });
   
   // Define initial state
   const initialInvoiceData = {
@@ -99,11 +68,10 @@ const InvoicePage = ({ onLogout, darkMode, toggleDarkMode }) => {
         amountINR: 0,
         subServices: [], // Use subServices consistently instead of nestedRows
         type: 'main'
-      }    ],
+      }
+    ],
     // Bank details - prefilled with requested values
-    bankDetails: {
-      accountName: 'Samatributa Solutions LLP'
-    },
+    accountName: 'Samatributa Solutions LLP',
     bankName: 'Yes Bank Limited',
     accountNumber: '1111111',
     ifscCode: '11111',
@@ -211,33 +179,15 @@ const InvoicePage = ({ onLogout, darkMode, toggleDarkMode }) => {
     if (!invoiceData.invoiceNumber || !invoiceData.invoiceDate || !invoiceData.senderName) {
       alert('Please fill in required fields: Invoice Number, Date, and Company Name');
       return;
-    }    setIsLoading(true);
-    
-    // Prepare the invoice data for saving
-    // Make sure we're using bankDetails.accountName instead of the direct accountName field
-    const preparedInvoiceData = {
-      ...invoiceData,
-      // Ensure bankDetails is initialized
-      bankDetails: {
-        ...(invoiceData.bankDetails || {}),
-        // Make sure accountName is in bankDetails
-        accountName: invoiceData.accountName || invoiceData.bankDetails?.accountName || ''
-      }
-    };
-    
-    // Remove the direct accountName field to avoid schema cache issues
-    // Delete only if using bankDetails.accountName
-    if (preparedInvoiceData.bankDetails?.accountName) {
-      delete preparedInvoiceData.accountName;
     }
-    
+    setIsLoading(true);
     let result;
     if (invoiceData.id) {
       // Update existing invoice
-      result = await supabase.from('invoices').update(preparedInvoiceData).eq('id', invoiceData.id);
+      result = await supabase.from('invoices').update({ ...invoiceData }).eq('id', invoiceData.id);
     } else {
       // Add new invoice
-      result = await supabase.from('invoices').insert([preparedInvoiceData]);
+      result = await supabase.from('invoices').insert([{ ...invoiceData }]);
     }
     setIsLoading(false);
     if (result.error) {
@@ -345,10 +295,11 @@ const InvoicePage = ({ onLogout, darkMode, toggleDarkMode }) => {
       navigate('/dashboard');
     }
   };
+
   // Update company data when a company is updated from Company Page
   useEffect(() => {
     // Handler for when a company is updated
-    const handleCompanyUpdate = async (event) => {
+    const handleCompanyUpdate = (event) => {
       const { company, action } = event.detail;
       console.log(`Company ${action === 'edit' ? 'updated' : 'added'}:`, company);
       
@@ -375,49 +326,39 @@ const InvoicePage = ({ onLogout, darkMode, toggleDarkMode }) => {
         // Update the selected company in our component state
         setSelectedCompany(company);
       }
-        // Update all saved invoices that use this company
-      // Get saved invoices from Supabase
-      const { data: savedInvoices, error } = await supabase
-        .from('invoices')
-        .select('*')
-        .eq('companyId', company.id)
-        .is('deletedAt', null);
       
-      if (error) {
-        console.error('Error fetching saved invoices:', error);
-        return;
-      }
+      // Update all saved invoices that use this company
+      const savedInvoices = JSON.parse(localStorage.getItem('savedInvoices')) || [];
+      let updatedInvoices = false;
       
-      // Update each invoice in Supabase that uses this company
-      if (savedInvoices && savedInvoices.length > 0) {
-        // Prepare the update data
-        const updateData = {
-          senderName: company.name,
-          senderAddress: company.address || '',
-          senderGSTIN: company.gstin || '',
-          logoUrl: company.logo || defaultLogo,
-          accountName: company.bankDetails?.accountName || '',
-          bankName: company.bankDetails?.bankName || '',
-          accountNumber: company.bankDetails?.accountNumber || '',
-          ifscCode: company.bankDetails?.ifscCode || '',
-          updated_at: new Date().toISOString()
-        };
-        
-        // Update all matching invoices
-        const { error: updateError } = await supabase
-          .from('invoices')
-          .update(updateData)
-          .eq('companyId', company.id)
-          .is('deletedAt', null);
-        
-        if (updateError) {
-          console.error('Error updating invoices with new company details:', updateError);
-        } else {
-          console.log('Updated saved invoices with new company details');
+      const updatedInvoicesList = savedInvoices.map(invoice => {
+        // Check if this invoice is associated with the updated company
+        if (invoice.companyId === company.id) {
+          updatedInvoices = true;
           
-          // Notify other components that invoices have been updated
-          window.dispatchEvent(new Event('invoicesUpdated'));
+          // Update company details in the invoice
+          return {
+            ...invoice,
+            senderName: company.name,
+            senderAddress: company.address || '',
+            senderGSTIN: company.gstin || '',
+            logoUrl: company.logo || defaultLogo,
+            accountName: company.bankDetails?.accountName || '',
+            bankName: company.bankDetails?.bankName || '',
+            accountNumber: company.bankDetails?.accountNumber || '',
+            ifscCode: company.bankDetails?.ifscCode || ''
+          };
         }
+        return invoice;
+      });
+      
+      // Only update localStorage if any invoices were modified
+      if (updatedInvoices) {
+        console.log('Updating saved invoices with new company details');
+        localStorage.setItem('savedInvoices', JSON.stringify(updatedInvoicesList));
+        
+        // Notify other components that invoices have been updated
+        window.dispatchEvent(new Event('invoicesUpdated'));
       }
     };
 

@@ -1,6 +1,5 @@
 import { INVOICE_CONSTANTS } from '../constants';
 import exchangeRateService from '../services/exchangeRateService';
-import { supabase } from '../config/supabaseClient';
 
 /**
  * Invoice business logic
@@ -14,36 +13,51 @@ const invoiceLogic = {
     return 'inv_' + Math.random().toString(36).substring(2, 15) + 
            Math.random().toString(36).substring(2, 15);
   },
+
   /**
    * Generate a new invoice number 
    * @param {string} recipientName - The customer name to use in the invoice number
-   * @param {boolean} saveIncrement - Whether to save the incremented value to Supabase
+   * @param {boolean} saveIncrement - Whether to save the incremented value to localStorage
    * @returns {string} Formatted invoice number
    */
-  generateInvoiceNumber: async (recipientName = 'CUST', saveIncrement = false) => {
+  generateInvoiceNumber: (recipientName = 'CUST', saveIncrement = false) => {
     const date = new Date();
     const year = date.getFullYear().toString();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
     const dateStr = `${year}${month}${day}`;
-      // Get customer prefix (first 4 letters)
+    
+    // Get customer prefix (first 4 letters)
     const customerPrefix = recipientName ? recipientName.trim().substring(0, 4).toUpperCase() : 'CUST';
     
-    // Use Supabase function to get the next invoice serial number
-    const { data, error } = await supabase.rpc('get_next_invoice_serial', {
-      prefix: customerPrefix,
-      date_key: dateStr
+    // Get last invoice serial from localStorage using a customer-specific key
+    const customerSerialKey = `invoiceSerial_${customerPrefix}`;
+    
+    // Get all existing invoices to find the highest invoice number
+    const savedInvoices = JSON.parse(localStorage.getItem('savedInvoices')) || [];
+    
+    // Find the highest serial number for this customer prefix
+    let highestSerial = 0;
+    const storedLastSerial = parseInt(localStorage.getItem(customerSerialKey) || '0');
+    highestSerial = storedLastSerial;
+    savedInvoices.forEach(invoice => {
+      if (invoice.invoiceNumber && invoice.invoiceNumber.startsWith(customerPrefix)) {
+        const parts = invoice.invoiceNumber.split('-');
+        if (parts.length === 3) {
+          const serialPart = parseInt(parts[2]);
+          if (!isNaN(serialPart) && serialPart > highestSerial) {
+            highestSerial = serialPart;
+          }
+        }
+      }
     });
-    
-    // If there was an error, fall back to a timestamp-based number
-    const nextSerial = !error && data ? data : Math.floor(Math.random() * 9000) + 1000;
-    
-    if (saveIncrement && !error) {
+    const nextSerial = highestSerial + 1;
+    if (saveIncrement) {
+      localStorage.setItem(customerSerialKey, nextSerial.toString());
       console.log(`Saved new invoice number: ${customerPrefix}-${dateStr}-${nextSerial.toString().padStart(4, '0')}`);
     } else {
       console.log(`Generated preview invoice number: ${customerPrefix}-${dateStr}-${nextSerial.toString().padStart(4, '0')} (not saved)`);
     }
-    
     const serialFormatted = String(nextSerial).padStart(4, '0');
     return `${customerPrefix}-${dateStr}-${serialFormatted}`;
   },
