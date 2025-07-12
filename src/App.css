@@ -1137,17 +1137,17 @@ body.dark-mode .dashboard-container {
 }
 
 body:not(.dark-mode) .btn-logout {
-  background-color: #ffe86e; /* Updated background color for logout button in light mode */
+  background-color: #da745bff; /* Updated background color for logout button in light mode */
 }
 
 body.dark-mode .btn-logout {
-  background-color: rgb(160, 124, 7);
-  border-color: rgb(160, 124, 7);
+  background-color: rgba(128, 56, 27, 1);
+  border-color: rgba(22, 17, 1, 1);
   color: #fff;
 }
 
 body.dark-mode .btn-logout:hover {
-  background-color: rgb(148, 118, 18);
+  background-color: rgba(148, 66, 18, 1);
   border-color: rgb(250, 248, 248);
 }
 

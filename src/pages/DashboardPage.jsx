@@ -947,9 +947,9 @@ const DashboardPage = ({ onLogout, darkMode, toggleDarkMode }) => {
       <aside className={`dashboard-sidebar${sidebarOpen ? ' open' : ''}`}>
         {/* Removed sidebar-close-btn ("X") button */}
         <div className="company-logo-container">
-          <img src="/images/c-logo.png" alt="Samatributa Invoice" className="main-company-logo" />
+          <img src="/images/c-logo.png" alt="ML Finance Solutions Invoice" className="main-company-logo" />
           <div className="sidebar-title">
-            <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '2px', color: 'var(--sidebar-text)' }}>Samatributa</h3>
+            <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '2px', color: 'var(--sidebar-text)' }}>ML Finance Invoice</h3>
             <p style={{ fontSize: '12px', fontWeight: '400', margin: 0, color: 'var(--light-text)', opacity: 0.8 }}>Invoice Automation</p>
           </div>
         </div>
