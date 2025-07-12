@@ -185,11 +185,7 @@ const LoginPage = ({ onLogin, darkMode, toggleDarkMode }) => {
           <div className="login-content">
             <div className="brand">
               <div className="brand-logo">
-                <div className="brand-dots">
-                  <div className="dot dot-black"></div>
-                  <div className="dot dot-gray"></div>
-                  <div className="dot dot-yellow"></div>
-                </div>
+                <img src="/favicon.svg" alt="ML Finance Solutions Logo" style={{ width: '48px', height: '48px', display: 'block', margin: '0 auto' }} />
               </div>
               <span className="brand-name">ML Finance Solutions</span>
             </div>
